@@ -6,11 +6,13 @@ licensed under the Apache License, Version 2.0 (see LICENSE). rec ships no NOTIC
 
 Modified rec files (each carries a "Modified from recursive-oss/rec 0.1.1" line at its top):
   overlay/rec_mlx/chat.py              Claude Code billing stamp pinned, opencode <env> block moved to the user turn
-  overlay/rec_mlx/engine.py            disk prompt cache
-  overlay/rec_mlx/prefix.py            64 prefix checkpoints instead of 2
-  overlay/rec_mlx/scheduler.py         disk prompt cache saved while idle
-  overlay/rec_mlx/kernels/device.py    M4 Max workers 76/64/64, REC_EXP_WORKERS and REC_EXP_CHUNK
+  overlay/rec_mlx/engine.py            disk prompt cache, common_prefix from prefix.py
+  overlay/rec_mlx/prefix.py            64 prefix checkpoints instead of 2, common_prefix helper shared with engine.py
+  overlay/rec_mlx/scheduler.py         disk prompt cache saved while idle, numbers-only metrics to REC_METRICS
+  overlay/rec_mlx/server.py            server sampling defaults and answer cap from REC_* variables, /v1/responses, model name claude-flint  overlay/rec_mlx/kernels/device.py    M4 Max workers 76/64/64, REC_EXP_WORKERS and REC_EXP_CHUNK
   overlay/rec_mlx/kernels/sampling.py  filtered sampler on M4 Max when workers != 36
 
 Added files (not part of rec), also under the Apache License, Version 2.0:
-  overlay/rec_mlx/disk_cache.py, install.py, tests/test_chat.py, tests/mac_disk_cache_check.py, README.md
+  overlay/rec_mlx/disk_cache.py, overlay/rec_mlx/responses.py, install.py, tests/test_chat.py,
+  tests/test_responses.py, tests/test_disk_cache_pieces.py, tests/test_install.py, tests/test_server_defaults.py,
+  tests/mac_disk_cache_check.py, relay/flint_codex_relay.py, tests/test_codex_relay.py, README.md
