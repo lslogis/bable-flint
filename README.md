@@ -1,7 +1,7 @@
 # @herdr/ai-flint-mac
 
 Recursive 의 로컬 코딩 모델 **Flint**(40B MoE, 토큰당 2.5B 활성)를 **M4 Max** 에서 [rec](https://github.com/recursive-oss/rec) 0.1.1 로 돌릴 때 쓰는 튜닝 런타임.
-rec 이 설치해 둔 원래 런타임을 복사하고 `rec_mlx` 파일 8개만 바꿔 끼운다. 원래 `rec serve` 는 그대로 남는다.
+rec 이 설치해 둔 원래 런타임을 복사하고 `rec_mlx` 파일 6개를 바꾸고 1개를 더한다. 원래 `rec serve` 는 그대로 남는다.
 
 측정 환경: M4 Max 40코어 GPU · 48 GB · macOS 27.2 · rec 0.1.1 · flint-int4.
 
@@ -25,8 +25,13 @@ rec 이 설치해 둔 원래 런타임을 복사하고 `rec_mlx` 파일 8개만 
 | 프롬프트 체크포인트 2개 → 64개 | `prefix.py` | 긴 대화에서 앞부분이 바뀌어도 가까운 체크포인트부터 다시 읽음 (recursive-oss/rec PR #24 제안과 같은 값) |
 | Claude Code 과금 도장 고정 | `chat.py` | 시스템 프롬프트 맨 앞 `cch=` · `cc_version` 끝자리가 요청마다 바뀌어 캐시를 못 씀. `f` 로 고정 |
 | opencode `<env>` 블록을 첫 사용자 메시지로 | `chat.py` | 폴더 · 날짜가 시스템 프롬프트 앞쪽에 있어 매번 캐시가 깨짐. `REC_ENV_TO_USER=0` 이면 그대로 |
-| 대화 캐시를 SSD 에 저장 · 불러오기 | `disk_cache.py`(새 파일), `engine.py`, `scheduler.py` | 응답이 끝난 뒤 쉬는 시간에 저장(디코드 속도에 영향 없음), 더 길게 맞는 저장본이 있으면 불러옴 |
-| 실험 스위치 `REC_EXP_*` | `kernels/device.py`, `kernels/megakernel.py`, `engine.py`, `prefix.py` | 설정 안 하면 위 값 그대로 |
+| 대화 캐시를 SSD 에 저장 · 불러오기 | `disk_cache.py`(새 파일), `engine.py`, `scheduler.py` | 응답이 끝난 뒤 쉬는 시간에 저장(디코드 속도에 영향 없음), RAM 캐시보다 길게 맞는 저장본이 있으면 불러옴 |
+
+디스크 캐시:
+- 8,192 토큰 이상이고, 이미 저장된 앞부분보다 4,096 토큰 이상 길어졌을 때만 저장한다. 새 파일을 쓰면 짧은 쪽 파일은 지우므로 대화 하나에 파일 하나.
+- 모델 · 가중치 형식 · KV 형식마다 따로 폴더를 쓴다. 다른 모델의 KV 는 불러오지 않는다.
+- 남은 디스크가 저장할 크기의 두 배보다 작으면 저장하지 않는다. 읽다 실패한 파일은 지우고 처음부터 읽는다.
+- 불러오기 전에 RAM 캐시를 먼저 놓아, 긴 프롬프트의 KV 를 두 벌 들고 있지 않는다.
 
 바꾼 파일마다 맨 위에 `Modified from recursive-oss/rec 0.1.1` 한 줄이 있다. 목록은 `NOTICE`.
 
@@ -63,9 +68,6 @@ rec status                    # "ready":true 면 준비 끝, 포트 11500
 | `REC_ENV_TO_USER` | 1 | `0` 이면 opencode `<env>` 를 옮기지 않음 |
 | `REC_EXP_WORKERS` | `76,64,64` | 디코드 · MLP · 헤드 워커 |
 | `REC_EXP_CHUNK` | 2048 | 프롬프트 읽기 청크 (체크포인트도 청크 시작마다) |
-| `REC_EXP_CHECKPOINTS` | 64 | 남길 체크포인트 수 |
-| `REC_EXP_PACKET` | 8 | 한 번에 GPU 에서 뽑는 토큰 수 |
-| `REC_EXP_SPECIALIZE`, `REC_EXP_UNROLL`, `REC_EXP_SHORT_HEADS`, `REC_EXP_LONG_HEADS`, `REC_EXP_LONG_CONTEXT` | rec 기본 | 디코드 커널 일정 (실험용) |
 
 ## 해 보고 뺀 것
 
@@ -82,6 +84,7 @@ rec status                    # "ready":true 면 준비 끝, 포트 11500
 - 같은 질문(greedy)에 같은 답: 설정을 바꿔 가며 비교할 때 답 해시가 같음을 확인.
 - 디코드 A/B: 같은 32K · 64K 요청을 원래 · 튜닝 런타임에 번갈아 보냄 (위 결과표).
 - `pnpm test` — `chat.py` 프롬프트 정리 시험 (Mac 없이 어디서나, transformers 없으면 대체물로).
+- `python3 tests/mac_disk_cache_check.py` — Mac 에서 디스크 캐시 확인. 포트 11501 에 서버를 띄워, 디스크에서 불러와 이어 읽은 답이 RAM 캐시로 읽은 답과 같은지(greedy), 대화가 길어져도 파일이 하나인지 본다. 도는 동안 `rec stop` 하고 끝나면 `rec-serve-tuned` 를 다시 띄운다.
 
 ## 지우기
 
@@ -97,8 +100,9 @@ rec serve                         # 원래 런타임
 | 경로 | 역할 |
 |---|---|
 | `install.py` | 원래 런타임 복사 → `overlay/` 덮어쓰기 → manifest 갱신 → `rec-serve-tuned` 생성 |
-| `overlay/rec_mlx/` | 바꾼 rec 파일 7개 + 새 파일 `disk_cache.py` |
+| `overlay/rec_mlx/` | 바꾼 rec 파일 6개 + 새 파일 `disk_cache.py` |
 | `tests/test_chat.py` | `chat.py` 시험 |
+| `tests/mac_disk_cache_check.py` | Mac 디스크 캐시 확인 |
 | `NOTICE`, `LICENSE` | rec 에서 가져와 바꾼 파일 목록, Apache-2.0 |
 
 ## 라이선스
