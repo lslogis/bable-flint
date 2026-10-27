@@ -1,0 +1,17 @@
+herdr ai/flint-mac
+Copyright 2026 herdr contributors
+
+This folder contains files derived from rec 0.1.1 by Recursive (https://github.com/recursive-oss/rec),
+licensed under the Apache License, Version 2.0 (see LICENSE). rec ships no NOTICE file.
+
+Modified rec files (each carries a "Modified from recursive-oss/rec 0.1.1" line at its top):
+  overlay/rec_mlx/chat.py              Claude Code billing stamp pinned, opencode <env> block moved to the user turn
+  overlay/rec_mlx/engine.py            disk prompt cache, REC_EXP_PACKET
+  overlay/rec_mlx/prefix.py            64 prefix checkpoints instead of 2 (REC_EXP_CHECKPOINTS)
+  overlay/rec_mlx/scheduler.py         disk prompt cache saved while idle
+  overlay/rec_mlx/kernels/device.py    M4 Max workers 76/64/64, REC_EXP_* profile switches
+  overlay/rec_mlx/kernels/megakernel.py REC_EXP_* decode schedule switches
+  overlay/rec_mlx/kernels/sampling.py  filtered sampler on M4 Max when workers != 36
+
+Added files (not part of rec), also under the Apache License, Version 2.0:
+  overlay/rec_mlx/disk_cache.py, install.py, tests/test_chat.py, README.md
