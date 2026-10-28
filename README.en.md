@@ -74,7 +74,7 @@ These are the values the server starts with. Changes take effect when the server
 
 ## Connecting apps
 
-In the **Apps** tab, each app shows what connecting will change. Press connect to go ahead. Disconnecting restores the original settings and moves the files Flint made to the Trash.
+In the **Apps** tab, each app shows what connecting will change. Press connect to go ahead. Disconnecting restores the original settings and moves the files Flint made to the Trash. Pi and opencode only gain a model to pick, so they have no disconnect button; uninstalling this app puts them back as they were.
 
 - **Pi** (recommended): adds one Flint provider to Pi's model list (`~/.pi/agent/models.json`). The key is not written into the file; Pi reads it from rec's key file each time. Pick Flint in `/model`, or start it with `pi --provider flint --model flint`. If Pi is not installed, the tab shows Pi's own install command (`curl -fsSL https://pi.dev/install.sh | sh`); the app does not install it for you.
 - **Claude Code**: your usual `claude` stays as it is; a separate `claude-flint` command is added. Skills, MCP servers and history are kept apart from your usual claude.
