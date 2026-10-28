@@ -21,7 +21,7 @@
 
 | | |
 |---|---|
-| ⚡ **Faster generation** | Against rec's original runtime: **+21%** at 32K context (107.2 → 129.7 tok/s), **+24%** at 64K (74.0 → 91.5 tok/s) |
+| ⚡ **Faster generation** | Measured on an M4 Max (40-core GPU, 48 GB) after auto-tune: **about 226 tok/s** on a short chat, **154 tok/s** with 29K tokens of context, **113 tok/s** with 59K. About 150 tok/s on average in real coding work (Pi) |
 | 📦 **Everything in one app** | The Flint engine (rec 0.1.1) ships inside the app. Nothing else to install, no versions to match |
 | 🔌 **Six apps, one button each** | Pi, Claude Code, Codex CLI, Codex in the ChatGPT app, the Claude app, opencode |
 | 💾 **SSD conversation cache** | Continuing a long conversation does not read the start again, even after a restart |
