@@ -49,13 +49,29 @@
 
 1. [Releases](../../releases) から `bable-flint-<バージョン>.dmg` をダウンロードします。**[直接ダウンロード (bable-flint-0.1.0.dmg)](https://github.com/lslogis/bable-flint/releases/latest/download/bable-flint-0.1.0.dmg)**
 2. dmg を開き、`bable-flint` を `アプリケーション` フォルダへドラッグします。
-3. 初回は「開発元を確認できない」として macOS に止められます（Apple の開発者署名がないアプリです）。
-   **システム設定 → プライバシーとセキュリティ** のいちばん下にある **このまま開く** を押し、もう一度 **開く** を押してください。次回からはそのまま開きます。
-   ターミナルが好みなら、この 1 行でも同じです。
+3. ブラウザでダウンロードしたアプリは、初回に「開発元を確認できない」として macOS に止められます（Apple の開発者署名がないアプリです）。
+   **インストール後、ターミナルでこの 1 行を実行してください。** 止められずにそのまま開きます。
 
    ```sh
    xattr -dr com.apple.quarantine /Applications/bable-flint.app
    ```
+
+   ターミナルを使わない場合は、一度開こうとしたあと **システム設定 → プライバシーとセキュリティ** のいちばん下にある **このまま開く** を押し、もう一度 **開く** を押してください。次回からはそのまま開きます。
+
+### ターミナルでインストール（「このまま開く」なし）
+
+ターミナルに次を貼り付けると、dmg をダウンロードして `アプリケーション` に入れ、そのまま開きます。`curl` でダウンロードしたファイルには macOS の「インターネットからダウンロード」の印が付かないので、**このまま開く** なしで開きます。
+
+```sh
+curl -fL -o /tmp/bable-flint.dmg https://github.com/lslogis/bable-flint/releases/latest/download/bable-flint-0.1.0.dmg \
+  && mkdir -p /tmp/bable-flint-dmg \
+  && hdiutil attach -nobrowse -quiet -mountpoint /tmp/bable-flint-dmg /tmp/bable-flint.dmg \
+  && ditto /tmp/bable-flint-dmg/bable-flint.app /Applications/bable-flint.app \
+  && hdiutil detach -quiet /tmp/bable-flint-dmg \
+  && open /Applications/bable-flint.app
+```
+
+アップデートにも同じコマンドが使えます。先にアプリを終了してください。
 
 ## 初回起動
 

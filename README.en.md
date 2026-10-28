@@ -47,13 +47,29 @@ If your Mac falls short, the app shows what is missing and downloads or changes 
 
 1. Download `bable-flint-<version>.dmg` from [Releases](../../releases). **[Direct download (bable-flint-0.1.0.dmg)](https://github.com/lslogis/bable-flint/releases/latest/download/bable-flint-0.1.0.dmg)**
 2. Open the dmg and drag `bable-flint` into the `Applications` folder.
-3. The first time you open it, macOS blocks it as coming from an unverified developer (the app has no Apple developer signature).
-   Go to **System Settings → Privacy & Security**, press **Open Anyway** at the bottom, then **Open** once more. After that it opens normally.
-   If you prefer Terminal, this one line does the same:
+3. An app downloaded in a browser is blocked the first time you open it, as coming from an unverified developer (the app has no Apple developer signature).
+   **After installing, run this one line in Terminal.** The app then opens without being blocked.
 
    ```sh
    xattr -dr com.apple.quarantine /Applications/bable-flint.app
    ```
+
+   Without Terminal: try to open it once, then go to **System Settings → Privacy & Security**, press **Open Anyway** at the bottom, then **Open** once more. After that it opens normally.
+
+### Install from Terminal (no Open Anyway)
+
+Paste this into Terminal. It downloads the dmg, puts the app in `Applications` and opens it. A file `curl` downloads does not get macOS's "downloaded from the internet" mark, so it opens without **Open Anyway**.
+
+```sh
+curl -fL -o /tmp/bable-flint.dmg https://github.com/lslogis/bable-flint/releases/latest/download/bable-flint-0.1.0.dmg \
+  && mkdir -p /tmp/bable-flint-dmg \
+  && hdiutil attach -nobrowse -quiet -mountpoint /tmp/bable-flint-dmg /tmp/bable-flint.dmg \
+  && ditto /tmp/bable-flint-dmg/bable-flint.app /Applications/bable-flint.app \
+  && hdiutil detach -quiet /tmp/bable-flint-dmg \
+  && open /Applications/bable-flint.app
+```
+
+The same command updates the app. Quit the app first.
 
 ## First run
 
