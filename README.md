@@ -45,7 +45,7 @@
 
 ## 설치
 
-1. [Releases](../../releases) 에서 `bable-flint-<버전>.dmg` 를 받습니다. **[바로 받기 (bable-flint-0.1.0.dmg)](https://github.com/lslogis/bable-flint/releases/latest/download/bable-flint-0.1.0.dmg)**
+1. [Releases](../../releases) 에서 `bable-flint.dmg` 를 받습니다. **[바로 받기 (bable-flint.dmg)](https://github.com/lslogis/bable-flint/releases/latest/download/bable-flint.dmg)**
 2. dmg 를 열고 `bable-flint` 를 `Applications` 폴더로 끌어 놓습니다.
 3. 브라우저로 받은 앱은 처음 열 때 macOS 가 "확인할 수 없는 개발자"라며 막습니다(Apple 개발자 서명이 없는 앱입니다).
    **설치 뒤 터미널에서 이 한 줄을 실행하세요.** 그러면 막히지 않고 바로 열립니다.
@@ -61,7 +61,7 @@
 터미널에 아래를 붙여 넣으면 dmg 를 받아 `Applications` 에 넣고 바로 엽니다. `curl` 로 받은 파일에는 macOS 의 "인터넷에서 받음" 표시가 붙지 않아서 **그래도 열기** 없이 열립니다.
 
 ```sh
-curl -fL -o /tmp/bable-flint.dmg https://github.com/lslogis/bable-flint/releases/latest/download/bable-flint-0.1.0.dmg \
+curl -fL -o /tmp/bable-flint.dmg https://github.com/lslogis/bable-flint/releases/latest/download/bable-flint.dmg \
   && mkdir -p /tmp/bable-flint-dmg \
   && hdiutil attach -nobrowse -quiet -mountpoint /tmp/bable-flint-dmg /tmp/bable-flint.dmg \
   && ditto /tmp/bable-flint-dmg/bable-flint.app /Applications/bable-flint.app \

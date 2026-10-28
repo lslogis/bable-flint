@@ -47,7 +47,7 @@
 
 ## インストール
 
-1. [Releases](../../releases) から `bable-flint-<バージョン>.dmg` をダウンロードします。**[直接ダウンロード (bable-flint-0.1.0.dmg)](https://github.com/lslogis/bable-flint/releases/latest/download/bable-flint-0.1.0.dmg)**
+1. [Releases](../../releases) から `bable-flint.dmg` をダウンロードします。**[直接ダウンロード (bable-flint.dmg)](https://github.com/lslogis/bable-flint/releases/latest/download/bable-flint.dmg)**
 2. dmg を開き、`bable-flint` を `アプリケーション` フォルダへドラッグします。
 3. ブラウザでダウンロードしたアプリは、初回に「開発元を確認できない」として macOS に止められます（Apple の開発者署名がないアプリです）。
    **インストール後、ターミナルでこの 1 行を実行してください。** 止められずにそのまま開きます。
@@ -63,7 +63,7 @@
 ターミナルに次を貼り付けると、dmg をダウンロードして `アプリケーション` に入れ、そのまま開きます。`curl` でダウンロードしたファイルには macOS の「インターネットからダウンロード」の印が付かないので、**このまま開く** なしで開きます。
 
 ```sh
-curl -fL -o /tmp/bable-flint.dmg https://github.com/lslogis/bable-flint/releases/latest/download/bable-flint-0.1.0.dmg \
+curl -fL -o /tmp/bable-flint.dmg https://github.com/lslogis/bable-flint/releases/latest/download/bable-flint.dmg \
   && mkdir -p /tmp/bable-flint-dmg \
   && hdiutil attach -nobrowse -quiet -mountpoint /tmp/bable-flint-dmg /tmp/bable-flint.dmg \
   && ditto /tmp/bable-flint-dmg/bable-flint.app /Applications/bable-flint.app \
