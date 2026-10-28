@@ -61,7 +61,7 @@ These are the values the server starts with. Changes take effect when the server
 - **Context**, **output limit**, **sampling**
 - **Workers**: generation workers, helper workers, read chunk
 - **SSD conversation cache**: folder and maximum size. When you continue a conversation, the server does not read the earlier part again, even after a restart.
-- **Defaults** resets the values to where they started.
+- **Reset to defaults** resets the values to where they started.
 
 ### Auto-tune
 
