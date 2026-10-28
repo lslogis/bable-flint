@@ -21,7 +21,7 @@
 
 | | |
 |---|---|
-| ⚡ **Faster generation** | Measured on an M4 Max (40-core GPU, 48 GB) after auto-tune: **about 226 tok/s** on a short chat, **154 tok/s** with 29K tokens of context, **113 tok/s** with 59K. About 150 tok/s on average in real coding work (Pi) |
+| ⚡ **Faster generation** | Measured on an M4 Max (40-core GPU, 48 GB) after auto-tune: **about 226 tok/s** on a short chat, **154 tok/s** with 29K tokens of context, **113 tok/s** with 59K. About 150 tok/s on average in real coding work (Pi), 203 tok/s at best |
 | 📦 **Everything in one app** | The Flint engine (rec 0.1.1) ships inside the app. Nothing else to install, no versions to match |
 | 🔌 **Six apps, one button each** | Pi, Claude Code, Codex CLI, Codex in the ChatGPT app, the Claude app, opencode |
 | 💾 **SSD conversation cache** | Continuing a long conversation does not read the start again, even after a restart |
