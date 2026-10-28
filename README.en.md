@@ -100,7 +100,8 @@ When it is done, press **Start server**.
 
 These are the values the server starts with. Changes take effect when the server restarts.
 
-- **Mode**: Fast (the speed-up) or Standard (the engine's original runtime, about 20% slower)
+**Open at login** at the top opens the app and starts the server when you log in. This one takes effect at once.
+
 - **Context, output limit, sampling**
 - **Workers**: generation workers, helper workers, read chunk
 - **SSD conversation cache**: folder and maximum size
@@ -112,6 +113,7 @@ Restarts the server for each candidate value, measures the speed, and proposes t
 
 - It takes 5 to 20 minutes. The server is unavailable meanwhile.
 - It only proposes a change that is more than 3% faster than what you have. Values that change the answer to the same question are dropped.
+- If the server does not start with the current values, it measures from rec's own `36,32,32` instead.
 - Apply the result right away or only put it into Options. Stopping it restarts the server with the previous values.
 - Quitting the app during a run stops the run and the server. Next time the server starts with your own values.
 
@@ -124,7 +126,7 @@ In the **Apps** tab, each app shows what connecting will change. Press **Connect
 | App | Connecting | How to use it |
 |---|---|---|
 | **Pi** (recommended) | Adds one Flint provider to Pi's model list (`~/.pi/agent/models.json`). The key is not written into the file; Pi reads it from the key file each time | `/model` → Flint, or `pi --provider flint --model flint` |
-| **Claude Code** | Your usual `claude` stays as it is; a separate `claude-flint` command is added, with its own skills, MCP servers and history | `claude-flint` |
+| **Claude Code** | Your usual `claude` stays as it is; a separate `claude-flint` command is added, with its own skills, MCP servers and history. Your first-run answers (theme and the like) and the folders you already trust come from your usual `claude`, so it doesn't ask again. The `[claude-code:unrecognized_model]` line at the top only means flint isn't in Claude Code's model list; it changes nothing | `claude-flint` |
 | **Codex CLI** | Your usual `codex` stays as it is; a separate `codex-flint` command is added. Web search, sub-agents and image input do not work | `codex-flint` |
 | **Codex in the ChatGPT app** | Adds **Flint (local)** at the bottom of the model list (one line in `~/.codex/config.toml`). A relay on this Mac sends only Flint requests to Flint; while connected, Codex's other requests also pass through it | Restart the ChatGPT app, then pick the model |
 | **Claude app** | Switches the app to its third-party (3P) mode to use **Flint (local)**. While connected, your claude.ai sign-in and chats are hidden; they come back when you disconnect | Quit the Claude app with ⌘Q before connecting or disconnecting |
@@ -145,7 +147,6 @@ In the **Apps** tab, each app shows what connecting will change. Press **Connect
 
 ## Manage
 
-- **Start at login**: starts the server and the menu bar icon when you log in.
 - **Check** inspects the engine and the installed runtime. If something is still wrong, **Reinstall**.
 - **Log**: the server log, live, with an errors-only filter.
 
@@ -184,7 +185,7 @@ swift test          # FlintCore tests
 open build/bable-flint.app
 
 cd ..
-pnpm test           # = python3 -E -s -m unittest tests.test_chat tests.test_responses tests.test_install tests.test_codex_relay
+pnpm test           # = python3 -E -s -m unittest tests.test_chat tests.test_responses tests.test_install tests.test_device tests.test_codex_relay
 ```
 
 - `build.sh` takes the rec 0.1.1 binary from a copy on this Mac, or downloads it from rec's release. Either way its SHA-256 must match.
@@ -202,7 +203,7 @@ The app passes these when it starts the server. The engine's original runtime ig
 | `REC_DISK_CACHE` | `~/.cache/rec-kv` | Conversation cache folder; `0` turns it off |
 | `REC_DISK_CACHE_GB` | 32 | Maximum cache size (GiB); the oldest entries go first |
 | `REC_DISK_CACHE_MIN` | 8192 | Prompts shorter than this are not saved |
-| `REC_EXP_WORKERS` | chip default (`76,64,64` on M4 Max and M5 Max) | Generation, MLP and head workers |
+| `REC_EXP_WORKERS` | chip default (`76,64,64` on the M5 Max and the 40-core-GPU M4 Max, rec's `36,32,32` elsewhere) | Generation, MLP and head workers |
 | `REC_EXP_CHUNK` | chip default | Prompt read chunk |
 | `REC_TEMPERATURE`, `REC_TOP_P`, `REC_TOP_K`, `REC_PRESENCE_PENALTY` | rec's defaults (the app passes 1.0, 0.95, 20, 0) | Sampling used when a request leaves it out; a value the request sends wins. Out of range stops the server at start |
 | `REC_OUTPUT_LIMIT` | none | Maximum tokens in one answer |

@@ -14,7 +14,7 @@ Modified rec files (each carries a "Modified from recursive-oss/rec 0.1.1" line 
   overlay/rec_mlx/scheduler.py         disk prompt cache saved while idle, numbers-only metrics to REC_METRICS
   overlay/rec_mlx/server.py            server sampling defaults and answer cap from REC_* variables, /v1/responses, model name claude-flint,
                                        tool_choice=none keeps the tools in the prompt under Flint grammar, disk_cache=false
-  overlay/rec_mlx/kernels/device.py    M4 Max workers 76/64/64, REC_EXP_WORKERS and REC_EXP_CHUNK
+  overlay/rec_mlx/kernels/device.py    M4 Max (40-core GPU) workers 76/64/64, REC_EXP_WORKERS and REC_EXP_CHUNK
   overlay/rec_mlx/kernels/sampling.py  filtered sampler on M4 Max when workers != 36
 
 Added files (not part of rec), also under the Apache License, Version 2.0:

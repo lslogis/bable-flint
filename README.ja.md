@@ -102,7 +102,8 @@ curl -fL -o /tmp/bable-flint.dmg https://github.com/lslogis/bable-flint/releases
 
 サーバーを起動するときの値です。変更はサーバーを再起動すると反映されます。
 
-- **モード**：高速（高速化あり）・標準（エンジン本来のランタイム、約 20% 遅い）
+いちばん上の **ログイン時にアプリを自動起動**（アプリは韓国語・英語表示）をオンにすると、ログインしたときにアプリとサーバーが起動します。これだけは押した瞬間に反映されます。
+
 - **コンテキスト・出力上限・サンプリング**
 - **ワーカー**：生成ワーカー、補助ワーカー、読み込み単位
 - **SSD 会話キャッシュ**：フォルダ、最大サイズ
@@ -114,6 +115,7 @@ curl -fL -o /tmp/bable-flint.dmg https://github.com/lslogis/bable-flint/releases
 
 - 5〜20 分かかり、その間サーバーは使えません。
 - 今の値より 3% を超えて速いときだけ変更を提案します。同じ質問への答えが変わる値は除外します。
+- 今の値でサーバーが起動しないときは、rec の既定値 `36,32,32` から測ります。
 - 結果はすぐ適用するか、オプションに入れておくだけにもできます。中止すると元の値で再起動します。
 - チューニング中にアプリを終了すると、チューニングとサーバーを止めます。次回は元の値で起動します。
 
@@ -126,7 +128,7 @@ curl -fL -o /tmp/bable-flint.dmg https://github.com/lslogis/bable-flint/releases
 | アプリ | 接続すると | 使い方 |
 |---|---|---|
 | **Pi**（おすすめ） | Pi のモデル一覧（`~/.pi/agent/models.json`）に Flint のプロバイダーをひとつ加えます。キーはファイルに書かず、使うたびにキーファイルから読みます | `/model` で Flint、または `pi --provider flint --model flint` |
-| **Claude Code** | いつもの `claude` はそのままに、`claude-flint` コマンドを別に作ります。スキル・MCP・会話履歴も別です | `claude-flint` |
+| **Claude Code** | いつもの `claude` はそのままに、`claude-flint` コマンドを別に作ります。スキル・MCP・会話履歴も別です。テーマなど初回の質問への答えと、信頼済みのフォルダはいつもの `claude` から引き継ぐので、もう一度聞かれません。先頭の `[claude-code:unrecognized_model]` 警告は flint が Claude Code のモデル一覧にないために出るもので、動作には関係ありません | `claude-flint` |
 | **Codex CLI** | いつもの `codex` はそのままに、`codex-flint` コマンドを別に作ります。ウェブ検索・サブエージェント・画像入力は使えません | `codex-flint` |
 | **ChatGPT アプリの Codex** | モデル一覧のいちばん下に **Flint (local)** を加えます（`~/.codex/config.toml` に 1 行）。この Mac の中で動く中継が Flint 宛てのリクエストだけを Flint に送ります。接続中は Codex のほかのリクエストもこの中継を通ります | ChatGPT アプリを再起動してからモデルを選ぶ |
 | **Claude アプリ** | アプリを 3P モードに切り替えて **Flint (local)** を使います。接続中は claude.ai のログインと会話が隠れ、切断すると戻ります | 接続・切断の前に Claude アプリを ⌘Q で終了 |
@@ -147,7 +149,6 @@ curl -fL -o /tmp/bable-flint.dmg https://github.com/lslogis/bable-flint/releases
 
 ## 管理
 
-- **ログイン時に起動**：ログインしたときにサーバーとメニューバーのアイコンを起動します。
 - **点検**：エンジンとインストールしたランタイムを検査します。それでもおかしければ **再インストール**。
 - **ログ**：サーバーのログをリアルタイムで表示します。**エラーのみ** で絞り込めます。
 
@@ -186,7 +187,7 @@ swift test          # FlintCore のテスト
 open build/bable-flint.app
 
 cd ..
-pnpm test           # = python3 -E -s -m unittest tests.test_chat tests.test_responses tests.test_install tests.test_codex_relay
+pnpm test           # = python3 -E -s -m unittest tests.test_chat tests.test_responses tests.test_install tests.test_device tests.test_codex_relay
 ```
 
 - `build.sh` は rec 0.1.1 の実行ファイルをこの Mac にあるコピーから取り、なければ rec のリリースからダウンロードします。どちらでも SHA-256 が一致する必要があります。
@@ -204,7 +205,7 @@ pnpm test           # = python3 -E -s -m unittest tests.test_chat tests.test_res
 | `REC_DISK_CACHE` | `~/.cache/rec-kv` | 会話キャッシュのフォルダ。`0` で無効 |
 | `REC_DISK_CACHE_GB` | 32 | 会話キャッシュの最大サイズ（GiB）。超えると古いものから削除 |
 | `REC_DISK_CACHE_MIN` | 8192 | これより短いプロンプトは保存しない |
-| `REC_EXP_WORKERS` | チップの既定値（M4 Max・M5 Max は `76,64,64`） | 生成・MLP・ヘッドのワーカー |
+| `REC_EXP_WORKERS` | チップの既定値（M5 Max と GPU 40 コアの M4 Max は `76,64,64`、ほかは rec の `36,32,32`） | 生成・MLP・ヘッドのワーカー |
 | `REC_EXP_CHUNK` | チップの既定値 | プロンプトの読み込み単位 |
 | `REC_TEMPERATURE`・`REC_TOP_P`・`REC_TOP_K`・`REC_PRESENCE_PENALTY` | rec の既定値（アプリは 1.0・0.95・20・0） | リクエストに値がないときのサンプリング。リクエストの値が優先。範囲外だとサーバーは起動しない |
 | `REC_OUTPUT_LIMIT` | なし | 1 回の回答の最大トークン数 |

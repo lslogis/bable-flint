@@ -100,7 +100,8 @@ curl -fL -o /tmp/bable-flint.dmg https://github.com/lslogis/bable-flint/releases
 
 서버를 켤 때 쓰는 값입니다. 바꾼 값은 서버를 다시 켜면 적용됩니다.
 
-- **모드**: 빠름(속도 개선) · 기본(엔진의 원래 런타임, 약 20% 느림)
+맨 위의 **로그인 시 앱 자동 시작** 을 켜면 로그인할 때 앱과 서버가 함께 켜집니다. 이것만은 누르는 즉시 적용됩니다.
+
 - **문맥 · 출력 한도 · 샘플링**
 - **워커**: 생성 워커, 보조 워커, 읽기 묶음
 - **SSD 대화 캐시**: 폴더, 최대 크기
@@ -112,6 +113,7 @@ curl -fL -o /tmp/bable-flint.dmg https://github.com/lslogis/bable-flint/releases
 
 - 5~20분 걸리고, 그동안 서버를 쓸 수 없습니다.
 - 지금 값보다 3% 넘게 빠를 때만 바꾸자고 합니다. 같은 질문에 답이 달라지는 값은 버립니다.
+- 지금 값으로 서버가 켜지지 않으면 rec 기본값 `36,32,32` 에서부터 잽니다.
 - 결과는 바로 적용하거나 옵션에만 넣을 수 있습니다. 중지하면 원래 값으로 다시 켭니다.
 - 튜닝 중에 앱을 끄면 튜닝을 멈추고 서버도 끕니다. 다음에 켜면 원래 값으로 켜집니다.
 
@@ -124,7 +126,7 @@ curl -fL -o /tmp/bable-flint.dmg https://github.com/lslogis/bable-flint/releases
 | 앱 | 연결하면 | 쓰는 법 |
 |---|---|---|
 | **Pi** (추천) | Pi 모델 목록(`~/.pi/agent/models.json`)에 Flint 공급자 하나를 더합니다. 키는 파일에 적지 않고 쓸 때마다 키 파일에서 읽습니다 | `/model` 에서 Flint, 또는 `pi --provider flint --model flint` |
-| **Claude Code** | 평소 `claude` 는 그대로 두고 `claude-flint` 명령을 따로 만듭니다. 스킬 · MCP · 대화 기록도 따로입니다 | `claude-flint` |
+| **Claude Code** | 평소 `claude` 는 그대로 두고 `claude-flint` 명령을 따로 만듭니다. 스킬 · MCP · 대화 기록도 따로입니다. 테마 같은 첫 실행 질문의 답과 이미 믿은 폴더는 평소 `claude` 에서 가져와 다시 묻지 않습니다. 첫 줄의 `[claude-code:unrecognized_model]` 경고는 Claude Code 목록에 없는 모델이라 나오는 것이고 동작과는 상관없습니다 | `claude-flint` |
 | **Codex CLI** | 평소 `codex` 는 그대로 두고 `codex-flint` 명령을 따로 만듭니다. 웹 검색 · 하위 에이전트 · 그림 읽기는 안 됩니다 | `codex-flint` |
 | **ChatGPT 앱의 Codex** | 모델 목록 맨 아래에 **Flint (local)** 을 더합니다(`~/.codex/config.toml` 에 한 줄). 이 Mac 안의 중계기가 Flint 요청만 Flint 로 보내고, 연결해 둔 동안 Codex 의 다른 요청도 이 중계기를 지납니다 | ChatGPT 앱을 다시 켠 뒤 모델 고르기 |
 | **Claude 앱** | 앱을 3P 모드로 바꿔 **Flint (local)** 을 씁니다. 연결해 둔 동안 claude.ai 로그인과 대화는 숨고, 끊으면 돌아옵니다 | 연결 · 끊기 전에 Claude 앱을 ⌘Q 로 끄기 |
@@ -145,7 +147,6 @@ curl -fL -o /tmp/bable-flint.dmg https://github.com/lslogis/bable-flint/releases
 
 ## 관리
 
-- **자동 켜기**: 로그인할 때 서버와 상단바 아이콘을 켭니다.
 - **점검**: 엔진과 설치된 런타임을 검사합니다. 그래도 이상하면 **다시 설치**.
 - **로그**: 서버 로그를 실시간으로 봅니다. **오류만** 으로 거를 수 있습니다.
 
@@ -184,7 +185,7 @@ swift test          # FlintCore 시험
 open build/bable-flint.app
 
 cd ..
-pnpm test           # = python3 -E -s -m unittest tests.test_chat tests.test_responses tests.test_install tests.test_codex_relay
+pnpm test           # = python3 -E -s -m unittest tests.test_chat tests.test_responses tests.test_install tests.test_device tests.test_codex_relay
 ```
 
 - `build.sh` 는 rec 0.1.1 실행 파일을 이 Mac 에 있는 사본에서 가져오고, 없으면 rec 릴리즈에서 받습니다. 어느 쪽이든 SHA-256 이 맞아야 합니다.
@@ -202,7 +203,7 @@ pnpm test           # = python3 -E -s -m unittest tests.test_chat tests.test_res
 | `REC_DISK_CACHE` | `~/.cache/rec-kv` | 대화 캐시 폴더. `0` 이면 끔 |
 | `REC_DISK_CACHE_GB` | 32 | 대화 캐시 최대 크기(GiB). 넘으면 오래된 것부터 지움 |
 | `REC_DISK_CACHE_MIN` | 8192 | 이보다 짧은 프롬프트는 저장하지 않음 |
-| `REC_EXP_WORKERS` | 칩 기본값 (M4 Max · M5 Max `76,64,64`) | 생성 · MLP · 헤드 워커 |
+| `REC_EXP_WORKERS` | 칩 기본값 (M5 Max 와 GPU 40코어 M4 Max `76,64,64`, 그 밖은 rec 의 `36,32,32`) | 생성 · MLP · 헤드 워커 |
 | `REC_EXP_CHUNK` | 칩 기본값 | 프롬프트 읽기 묶음 |
 | `REC_TEMPERATURE` · `REC_TOP_P` · `REC_TOP_K` · `REC_PRESENCE_PENALTY` | rec 기본값 (앱은 1.0 · 0.95 · 20 · 0) | 요청에 값이 없을 때 쓰는 샘플링. 요청이 보낸 값이 이김. 범위 밖이면 서버가 켜지지 않음 |
 | `REC_OUTPUT_LIMIT` | 없음 | 답 하나의 최대 토큰 |
