@@ -3,7 +3,7 @@
 [한국어](README.md)
 
 A Mac app that runs the local coding model **Flint** fast and connects the coding apps you already use to it.
-It installs, starts and stops a tuned server on top of [rec](https://github.com/recursive-oss/rec) 0.1.1. It connects Claude Code, Codex CLI, Codex in the ChatGPT app, the Claude app and opencode with one button each, and disconnecting puts them back the way they were.
+It installs, starts and stops a tuned server on top of [rec](https://github.com/recursive-oss/rec) 0.1.1. It connects Pi, Claude Code, Codex CLI, Codex in the ChatGPT app, the Claude app and opencode with one button each, and disconnecting puts them back the way they were.
 
 Measured: generation is faster than rec's original runtime, 107.2 → 129.7 tok/s (+21%) at 32K context and 74.0 → 91.5 tok/s (+24%) at 64K.
 Measured on: M4 Max (40-core GPU), 48 GB memory, macOS 27.2, rec 0.1.1, flint-int4.
@@ -22,20 +22,21 @@ If your Mac falls short, the app shows what is missing and downloads or changes 
 
 ## Install
 
-There is no prebuilt app download. Build the app from this repository. You need Swift 6 (Xcode 16 or later).
+1. Download `bable-flint-<version>.dmg` from [Releases](../../releases).
+2. Open the dmg and drag `bable-flint` into the `Applications` folder.
+3. The first time you open it: the app has no Apple developer signature, so macOS blocks it as unverified.
+   Go to **System Settings → Privacy & Security**, press **Open Anyway** at the bottom, then **Open** once more. After that it opens normally.
+   If you prefer Terminal, this one line does the same:
 
-```sh
-cd app
-./build.sh
-open build/bable-flint.app
-```
-
-You can move `build/bable-flint.app` to your Applications folder.
+   ```sh
+   xattr -dr com.apple.quarantine /Applications/bable-flint.app
+   ```
 
 ## First run
 
 The app walks you through it:
 
+0. It asks for the name of the YouTube channel that made the app (any case). Once answered, it never asks again.
 1. It checks that this Mac meets the requirements.
 2. It checks that rec is installed.
 3. **Download** fetches the Flint model (about 21 GB).
@@ -75,6 +76,7 @@ These are the values the server starts with. Changes take effect when the server
 
 In the **Apps** tab, each app shows what connecting will change. Press connect to go ahead. Disconnecting restores the original settings and moves the files Flint made to the Trash.
 
+- **Pi** (recommended): adds one Flint provider to Pi's model list (`~/.pi/agent/models.json`). The key is not written into the file; Pi reads it from rec's key file each time. Pick Flint in `/model`, or start it with `pi --provider flint --model flint`. If Pi is not installed, the tab shows Pi's own install command (`curl -fsSL https://pi.dev/install.sh | sh`); the app does not install it for you.
 - **Claude Code**: your usual `claude` stays as it is; a separate `claude-flint` command is added. Skills, MCP servers and history are kept apart from your usual claude.
 - **Codex CLI**: your usual `codex` stays as it is; a separate `codex-flint` command is added. Web search, sub-agents and image input do not work.
 - **Codex in the ChatGPT app**: adds **Flint (local)** at the bottom of the model list. It puts one line in `~/.codex/config.toml`, and a relay running on this Mac sends only Flint requests to Flint. Restart the ChatGPT app to see it. While connected, Codex's other requests also pass through this relay.
@@ -107,10 +109,13 @@ Until you empty the Trash, you can put them back.
 
 ### Build and test
 
+Building from source needs Swift 6 (Xcode 16 or later).
+
 ```sh
 cd app
 swift test          # FlintCore tests
 ./build.sh          # build/bable-flint.app (ad-hoc signed)
+open build/bable-flint.app
 
 cd ..
 pnpm test           # = python3 -E -s -m unittest tests.test_chat tests.test_responses tests.test_install tests.test_codex_relay

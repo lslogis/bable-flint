@@ -3,7 +3,7 @@
 [English](README.en.md)
 
 Mac 에서 로컬 코딩 모델 **Flint** 를 빠르게 돌리고, 쓰던 코딩 앱을 거기에 붙여 주는 앱입니다.
-[rec](https://github.com/recursive-oss/rec) 0.1.1 위에 속도를 맞춘 서버를 설치하고 켜고 끕니다. Claude Code · Codex CLI · ChatGPT 앱의 Codex · Claude 앱 · opencode 를 버튼 하나로 연결하고, 끊으면 원래대로 돌려 놓습니다.
+[rec](https://github.com/recursive-oss/rec) 0.1.1 위에 속도를 맞춘 서버를 설치하고 켜고 끕니다. Pi · Claude Code · Codex CLI · ChatGPT 앱의 Codex · Claude 앱 · opencode 를 버튼 하나로 연결하고, 끊으면 원래대로 돌려 놓습니다.
 
 측정: 생성 속도가 rec 원래 런타임보다 32K 문맥에서 107.2 → 129.7 tok/s(+21%), 64K 에서 74.0 → 91.5 tok/s(+24%).
 측정한 Mac: M4 Max(GPU 40코어) · 메모리 48 GB · macOS 27.2 · rec 0.1.1 · flint-int4.
@@ -22,20 +22,21 @@ Mac 에서 로컬 코딩 모델 **Flint** 를 빠르게 돌리고, 쓰던 코딩
 
 ## 설치
 
-미리 만든 앱 파일은 없습니다. 이 저장소에서 앱을 빌드합니다. Swift 6(Xcode 16 이상)이 필요합니다.
+1. [Releases](../../releases) 에서 `bable-flint-<버전>.dmg` 를 받습니다.
+2. dmg 를 열고 `bable-flint` 를 `Applications` 폴더로 끌어 놓습니다.
+3. 처음 열 때: 이 앱은 Apple 개발자 서명이 없어서 macOS 가 "확인할 수 없다"며 막습니다.
+   **시스템 설정 → 개인정보 보호 및 보안** 맨 아래의 **그래도 열기** 를 누르고, 한 번 더 **열기** 를 누르세요. 다음부터는 바로 열립니다.
+   터미널이 편하면 이 명령 한 줄로도 됩니다:
 
-```sh
-cd app
-./build.sh
-open build/bable-flint.app
-```
-
-원하면 `build/bable-flint.app` 을 `응용 프로그램` 폴더로 옮겨 쓰세요.
+   ```sh
+   xattr -dr com.apple.quarantine /Applications/bable-flint.app
+   ```
 
 ## 처음 켤 때
 
 앱이 순서대로 안내합니다.
 
+0. 이 앱을 만든 유튜브 채널 이름을 묻습니다(대소문자 상관없음). 한 번 맞히면 다시 묻지 않습니다.
 1. 이 Mac 이 사양에 맞는지 확인합니다.
 2. rec 이 있는지 확인합니다.
 3. **받기** — Flint 모델을 받습니다(약 21 GB).
@@ -75,6 +76,7 @@ open build/bable-flint.app
 
 **앱 연결** 탭에서 앱마다 무엇이 바뀌는지 보고 **이대로 연결** 을 누릅니다. **연결 끊기** 는 연결 전으로 되돌립니다. 만든 파일은 휴지통으로 옮깁니다.
 
+- **Pi** (추천): Pi 모델 목록(`~/.pi/agent/models.json`)에 Flint 공급자 하나만 더합니다. 키는 파일에 넣지 않고 쓸 때마다 rec 키 파일에서 읽습니다. `/model` 에서 Flint 를 고르거나 `pi --provider flint --model flint` 로 켭니다. Pi 가 없으면 공식 설치 명령(`curl -fsSL https://pi.dev/install.sh | sh`)을 보여 줍니다. 앱이 대신 설치하지는 않습니다.
 - **Claude Code**: 평소 `claude` 는 그대로 두고, `claude-flint` 명령을 따로 만듭니다. 스킬 · MCP · 대화 기록은 평소 claude 와 따로입니다.
 - **Codex CLI**: 평소 `codex` 는 그대로 두고, `codex-flint` 명령을 따로 만듭니다. 웹 검색 · 하위 에이전트 · 그림 읽기는 안 됩니다.
 - **ChatGPT 앱의 Codex**: 모델 목록 맨 아래에 **Flint (local)** 을 더합니다. `~/.codex/config.toml` 에 한 줄을 넣고, 이 Mac 안에서 도는 중계기가 Flint 요청만 Flint 로 보냅니다. ChatGPT 앱을 다시 켜야 보입니다. 연결해 둔 동안 Codex 의 다른 요청도 이 중계기를 지납니다.
@@ -107,10 +109,13 @@ open build/bable-flint.app
 
 ### 빌드 · 시험
 
+소스에서 직접 빌드하려면 Swift 6(Xcode 16 이상)이 필요합니다.
+
 ```sh
 cd app
 swift test          # FlintCore 시험
 ./build.sh          # build/bable-flint.app (ad-hoc 서명)
+open build/bable-flint.app
 
 cd ..
 pnpm test           # = python3 -E -s -m unittest tests.test_chat tests.test_responses tests.test_install tests.test_codex_relay
