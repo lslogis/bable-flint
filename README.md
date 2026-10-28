@@ -1,22 +1,45 @@
-# bable-flint
+<p align="center"><img src="docs/icon.png" width="128" alt="bable-flint 아이콘"></p>
 
-[English](README.en.md)
+<h1 align="center">bable-flint</h1>
 
-Mac 에서 로컬 코딩 모델 **Flint** 를 빠르게 돌리고, 쓰던 코딩 앱을 거기에 붙여 주는 앱입니다.
-[rec](https://github.com/recursive-oss/rec) 0.1.1 위에 속도를 맞춘 서버를 설치하고 켜고 끕니다. Pi · Claude Code · Codex CLI · ChatGPT 앱의 Codex · Claude 앱 · opencode 를 버튼 하나로 연결하고, 끊으면 원래대로 돌려 놓습니다.
+<p align="center"><b>로컬 코딩 모델 Flint 를 Mac 에서 더 빠르게.<br>쓰던 코딩 앱에는 버튼 하나로.</b></p>
 
-측정: 생성 속도가 rec 원래 런타임보다 32K 문맥에서 107.2 → 129.7 tok/s(+21%), 64K 에서 74.0 → 91.5 tok/s(+24%).
-측정한 Mac: M4 Max(GPU 40코어) · 메모리 48 GB · macOS 27.2 · rec 0.1.1 · flint-int4.
+<p align="center">
+  <b>한국어</b> · <a href="README.en.md">English</a> · <a href="README.ja.md">日本語</a>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/macOS-15%2B-111?logo=apple" alt="macOS 15+">
+  <img src="https://img.shields.io/badge/Apple%20Silicon-M4%20%C2%B7%20M5%20Pro%2FMax-5b4fd6" alt="M4 · M5 Pro/Max">
+  <img src="https://img.shields.io/badge/memory-48%20GB%2B-5b4fd6" alt="48 GB+">
+  <img src="https://img.shields.io/badge/license-Apache--2.0-2f7d4f" alt="Apache-2.0">
+</p>
+
+<p align="center"><img src="docs/screenshot.png" width="820" alt="bable-flint 화면"></p>
+
+## 한눈에
+
+| | |
+|---|---|
+| ⚡ **더 빠른 생성** | rec 원래 런타임보다 32K 문맥 **+21%**(107.2 → 129.7 tok/s), 64K **+24%**(74.0 → 91.5 tok/s) |
+| 📦 **이것 하나로 끝** | Flint 엔진(rec 0.1.1)이 앱에 들어 있습니다. 따로 깔 것도, 버전 맞출 것도 없습니다 |
+| 🔌 **앱 6개를 버튼 하나로** | Pi · Claude Code · Codex CLI · ChatGPT 앱의 Codex · Claude 앱 · opencode |
+| 💾 **SSD 대화 캐시** | 긴 대화를 이어 물을 때 앞부분을 다시 읽지 않습니다. 서버를 다시 켠 뒤에도요 |
+| 🎛 **자동 튜닝** | 이 Mac 에서 가장 빠른 워커 수와 읽기 묶음을 직접 재서 찾습니다 |
+| 🔒 **이 Mac 안에서만** | 서버는 127.0.0.1 에서만 요청을 받습니다. 대화는 밖으로 나가지 않습니다 |
+
+<sub>측정: M4 Max(GPU 40코어) · 메모리 48 GB · macOS 27.2 · flint-int4</sub>
 
 ## 필요한 것
 
-- Apple Silicon Mac, 칩은 **M4 Pro · M4 Max · M5 Pro · M5 Max** 중 하나
-- 메모리 **48 GB 이상**
-- 디스크 여유 **32 GB 이상** (모델 21 GB + 런타임 + 대화 캐시). 모델을 이미 받아 두었으면 10 GB.
-- macOS 15 이상
-- [rec](https://github.com/recursive-oss/rec) **0.1.1** — 먼저 설치해 두세요. 다른 버전이면 설치가 멈춥니다.
-- `python3` (Xcode Command Line Tools 에 들어 있음)
-- ChatGPT 앱의 Codex 를 연결할 때만: Python 3.14 이상 (예: Homebrew 의 `python3`)
+| | |
+|---|---|
+| 칩 | Apple Silicon **M4 Pro · M4 Max · M5 Pro · M5 Max** |
+| 메모리 | **48 GB** 이상 |
+| 디스크 | 여유 **32 GB** 이상 (모델 21 GB + 엔진 + 대화 캐시). 모델이 이미 있으면 10 GB |
+| macOS | 15 이상 |
+| `python3` | Xcode Command Line Tools 에 들어 있음 |
+| ChatGPT 앱의 Codex 를 연결할 때만 | Python 3.14 이상 (예: Homebrew 의 `python3`) |
 
 사양이 안 맞으면 앱이 무엇이 모자란지 보여 주고, 아무것도 받거나 바꾸지 않습니다.
 
@@ -24,9 +47,9 @@ Mac 에서 로컬 코딩 모델 **Flint** 를 빠르게 돌리고, 쓰던 코딩
 
 1. [Releases](../../releases) 에서 `bable-flint-<버전>.dmg` 를 받습니다.
 2. dmg 를 열고 `bable-flint` 를 `Applications` 폴더로 끌어 놓습니다.
-3. 처음 열 때: 이 앱은 Apple 개발자 서명이 없어서 macOS 가 "확인할 수 없다"며 막습니다.
+3. 처음 열 때 macOS 가 "확인할 수 없는 개발자"라며 막습니다(Apple 개발자 서명이 없는 앱입니다).
    **시스템 설정 → 개인정보 보호 및 보안** 맨 아래의 **그래도 열기** 를 누르고, 한 번 더 **열기** 를 누르세요. 다음부터는 바로 열립니다.
-   터미널이 편하면 이 명령 한 줄로도 됩니다:
+   터미널이 편하면 이 한 줄로도 됩니다.
 
    ```sh
    xattr -dr com.apple.quarantine /Applications/bable-flint.app
@@ -36,99 +59,125 @@ Mac 에서 로컬 코딩 모델 **Flint** 를 빠르게 돌리고, 쓰던 코딩
 
 앱이 순서대로 안내합니다.
 
-0. 이 앱을 만든 유튜브 채널 이름을 묻습니다(대소문자 상관없음). 한 번 맞히면 다시 묻지 않습니다.
-1. 이 Mac 이 사양에 맞는지 확인합니다.
-2. rec 이 있는지 확인합니다.
-3. **받기** — Flint 모델을 받습니다(약 21 GB).
-4. **설치** — 속도를 맞춘 런타임을 설치합니다. rec 의 원래 런타임은 그대로 둡니다.
+| 단계 | 하는 일 |
+|---|---|
+| 0 | 이 앱을 만든 유튜브 채널 이름을 묻습니다(대소문자 상관없음). 한 번 맞히면 다시 묻지 않습니다 |
+| 1 | 이 Mac 이 사양에 맞는지 확인합니다 |
+| 2 | 앱에 든 엔진(rec 0.1.1)을 앱 전용 폴더 `~/.local/share/bable-flint` 에 둡니다. 자동입니다 |
+| 3 | **받기** — Flint 모델을 받습니다(약 21 GB). rec 을 따로 깔아 모델을 받아 둔 적이 있으면 그걸 복제해서 씁니다(APFS 복제라 공간이 늘지 않음) |
+| 4 | **설치** — 엔진의 원래 런타임을 풀고, 그 복사본에 속도 개선을 얹습니다 |
 
 끝나면 **서버 켜기** 를 누릅니다.
 
+> rec 을 따로 깔아 쓰고 있어도 괜찮습니다. 이 앱은 자기 폴더의 엔진만 쓰고, 따로 깔린 rec 은 버전이 무엇이든 읽거나 바꾸지 않습니다. 둘 다 기본 포트 11500 을 쓰니 한 번에 하나만 켜 두세요.
+
 ## 매일 쓰기
 
-- 왼쪽 패널: 서버 상태, 마지막 요청의 속도(tok/s), 메모리, 대화 캐시, 연결된 앱. 아래에 **서버 켜기 · 다시 시작 · 서버 끄기**.
-- 오른쪽 탭: **켤 때 옵션 · 앱 연결 · 관리**.
-- 오른쪽 위: **한/EN** 언어 전환, 확대 · 축소(−, 100%, + / ⌘+ ⌘− ⌘0).
-- 창을 닫아도 서버는 계속 돕니다. Dock 아이콘은 숨고, 상단바의 불꽃 아이콘이 남습니다.
-- 상단바 아이콘: 상태와 속도, 서버 켜기 · 끄기 · 다시 시작, 창 열기, 주소 복사, 종료.
+- **왼쪽 패널**: 서버 상태, 마지막 요청의 속도(tok/s), 메모리, 대화 캐시, 연결된 앱. 아래에 **서버 켜기 · 다시 시작 · 서버 끄기**.
+- **오른쪽 탭**: **켤 때 옵션 · 앱 연결 · 관리**.
+- **오른쪽 위**: **한/EN** 언어 전환, 확대 · 축소(−, 100%, + / ⌘+ ⌘− ⌘0).
+- 창을 닫아도 서버는 계속 돕니다. Dock 아이콘은 숨고 상단바의 불꽃 아이콘이 남습니다.
+- **상단바 아이콘**: 상태와 속도, 서버 켜기 · 끄기 · 다시 시작, 창 열기, 주소 복사, 종료.
 - 서버가 켜진 채 종료하면 묻습니다: **서버는 켜 두고 종료 · 서버도 끄고 종료 · 취소**.
-- 서버는 이 Mac 안(127.0.0.1)에서만 요청을 받습니다.
 
 ## 켤 때 옵션
 
 서버를 켤 때 쓰는 값입니다. 바꾼 값은 서버를 다시 켜면 적용됩니다.
 
-- **모드**: 빠름(속도를 맞춘 런타임) · 기본(rec 원래 런타임, 약 20% 느림)
-- **문맥**, **출력 한도**, **샘플링**
+- **모드**: 빠름(속도 개선) · 기본(엔진의 원래 런타임, 약 20% 느림)
+- **문맥 · 출력 한도 · 샘플링**
 - **워커**: 생성 워커, 보조 워커, 읽기 묶음
-- **SSD 대화 캐시**: 폴더, 최대 크기. 같은 대화를 이어 물을 때 앞부분을 다시 읽지 않습니다. 서버를 다시 켠 뒤에도 됩니다.
-- **기본값으로**: 처음 값으로 되돌립니다.
+- **SSD 대화 캐시**: 폴더, 최대 크기
+- **기본값으로**: 처음 값으로 되돌립니다
 
 ### 자동 튜닝
 
-**자동 튜닝** 은 값마다 서버를 다시 켜 속도를 직접 재고, 이 Mac 에서 가장 빠른 워커와 읽기 묶음을 제안합니다.
+값마다 서버를 다시 켜서 속도를 직접 재고, 이 Mac 에서 가장 빠른 워커와 읽기 묶음을 제안합니다.
 
-- 5~20분 걸립니다. 그동안 서버를 쓸 수 없습니다.
+- 5~20분 걸리고, 그동안 서버를 쓸 수 없습니다.
 - 지금 값보다 3% 넘게 빠를 때만 바꾸자고 합니다. 같은 질문에 답이 달라지는 값은 버립니다.
 - 결과는 바로 적용하거나 옵션에만 넣을 수 있습니다. 중지하면 원래 값으로 다시 켭니다.
+- 튜닝 중에 앱을 끄면 튜닝을 멈추고 서버도 끕니다. 다음에 켜면 원래 값으로 켜집니다.
 
 ## 앱 연결
 
-**앱 연결** 탭에서 앱마다 무엇이 바뀌는지 보고 **이대로 연결** 을 누릅니다. **연결 끊기** 는 연결 전으로 되돌립니다. 만든 파일은 휴지통으로 옮깁니다. Pi 와 opencode 는 고를 모델 하나가 늘 뿐이라 끊기 버튼이 없고, 이 앱을 지울 때 원래대로 돌려 놓습니다.
+<p align="center"><img src="docs/screenshot-apps.png" width="820" alt="앱 연결 화면"></p>
 
-- **Pi** (추천): Pi 모델 목록(`~/.pi/agent/models.json`)에 Flint 공급자 하나만 더합니다. 키는 파일에 넣지 않고 쓸 때마다 rec 키 파일에서 읽습니다. `/model` 에서 Flint 를 고르거나 `pi --provider flint --model flint` 로 켭니다. Pi 가 없으면 공식 설치 명령(`curl -fsSL https://pi.dev/install.sh | sh`)을 보여 줍니다. 앱이 대신 설치하지는 않습니다.
-- **Claude Code**: 평소 `claude` 는 그대로 두고, `claude-flint` 명령을 따로 만듭니다. 스킬 · MCP · 대화 기록은 평소 claude 와 따로입니다.
-- **Codex CLI**: 평소 `codex` 는 그대로 두고, `codex-flint` 명령을 따로 만듭니다. 웹 검색 · 하위 에이전트 · 그림 읽기는 안 됩니다.
-- **ChatGPT 앱의 Codex**: 모델 목록 맨 아래에 **Flint (local)** 을 더합니다. `~/.codex/config.toml` 에 한 줄을 넣고, 이 Mac 안에서 도는 중계기가 Flint 요청만 Flint 로 보냅니다. ChatGPT 앱을 다시 켜야 보입니다. 연결해 둔 동안 Codex 의 다른 요청도 이 중계기를 지납니다.
-- **Claude 앱**: 앱을 3P 모드로 바꿔 **Flint (local)** 을 씁니다. 연결 · 끊기 전에 Claude 앱을 ⌘Q 로 끄세요. 연결해 둔 동안 claude.ai 로그인과 대화는 보이지 않고, 끊으면 돌아옵니다.
-- **opencode**: 설정에 공급자 하나만 더합니다. `/models` 에서 Flint 를 고르거나 `opencode -m flint/flint` 로 켭니다.
+**앱 연결** 탭에서 앱마다 무엇이 바뀌는지 미리 보고 **이대로 연결** 을 누릅니다.
 
-다른 앱은 직접 넣으면 됩니다. 같은 탭에 주소(OpenAI 호환 `http://127.0.0.1:11500/v1`, Anthropic 호환 `http://127.0.0.1:11500`), 모델 이름 `flint`, 키가 있습니다. 키는 **보기 · 가리기**, **새 키** 로 바꿀 수 있고, **연결 시험** 으로 서버가 답하는지 봅니다. 새 키를 만들면 지금 키는 바로 막히고, 연결한 앱은 같이 고쳐집니다.
+| 앱 | 연결하면 | 쓰는 법 |
+|---|---|---|
+| **Pi** (추천) | Pi 모델 목록(`~/.pi/agent/models.json`)에 Flint 공급자 하나를 더합니다. 키는 파일에 적지 않고 쓸 때마다 키 파일에서 읽습니다 | `/model` 에서 Flint, 또는 `pi --provider flint --model flint` |
+| **Claude Code** | 평소 `claude` 는 그대로 두고 `claude-flint` 명령을 따로 만듭니다. 스킬 · MCP · 대화 기록도 따로입니다 | `claude-flint` |
+| **Codex CLI** | 평소 `codex` 는 그대로 두고 `codex-flint` 명령을 따로 만듭니다. 웹 검색 · 하위 에이전트 · 그림 읽기는 안 됩니다 | `codex-flint` |
+| **ChatGPT 앱의 Codex** | 모델 목록 맨 아래에 **Flint (local)** 을 더합니다(`~/.codex/config.toml` 에 한 줄). 이 Mac 안의 중계기가 Flint 요청만 Flint 로 보내고, 연결해 둔 동안 Codex 의 다른 요청도 이 중계기를 지납니다 | ChatGPT 앱을 다시 켠 뒤 모델 고르기 |
+| **Claude 앱** | 앱을 3P 모드로 바꿔 **Flint (local)** 을 씁니다. 연결해 둔 동안 claude.ai 로그인과 대화는 숨고, 끊으면 돌아옵니다 | 연결 · 끊기 전에 Claude 앱을 ⌘Q 로 끄기 |
+| **opencode** | 설정에 공급자 하나를 더합니다 | `/models` 에서 Flint, 또는 `opencode -m flint/flint` |
+
+- **연결 끊기** 는 연결 전 설정으로 되돌리고, 만든 파일은 휴지통으로 옮깁니다.
+- Pi 와 opencode 는 고를 모델이 하나 늘 뿐이라 끊기 버튼이 없습니다. 앱을 지울 때 원래대로 돌려 놓습니다.
+- Pi 가 없으면 공식 설치 명령(`curl -fsSL https://pi.dev/install.sh | sh`)을 보여 줍니다.
+
+**다른 앱**은 직접 넣으면 됩니다. 같은 탭에 필요한 것이 다 있습니다.
+
+| | |
+|---|---|
+| OpenAI 호환 주소 | `http://127.0.0.1:11500/v1` |
+| Anthropic 호환 주소 | `http://127.0.0.1:11500` |
+| 모델 이름 | `flint` |
+| 키 | **보기 · 가리기**, **새 키**(지금 키는 바로 막히고 연결한 앱은 같이 고쳐짐), **연결 시험** |
 
 ## 관리
 
 - **자동 켜기**: 로그인할 때 서버와 상단바 아이콘을 켭니다.
-- **점검**: rec 과 설치된 런타임을 검사합니다. 그래도 이상하면 **다시 설치**.
+- **점검**: 엔진과 설치된 런타임을 검사합니다. 그래도 이상하면 **다시 설치**.
 - **로그**: 서버 로그를 실시간으로 봅니다. **오류만** 으로 거를 수 있습니다.
 
 ## 지우기
 
 **관리 → 앱 지우기** 를 쓰세요. 서버를 끄고, 연결한 앱을 모두 연결 전으로 되돌린 뒤, 아래를 휴지통으로 옮깁니다.
 
-- rec 과 모델
+- 앱 전용 폴더 `~/.local/share/bable-flint` (엔진 · 모델 · 속도 개선 · 키 · 로그)
 - 대화 캐시
-- 속도를 맞춘 런타임
 - 앱 설정과 연결 파일
 - 앱 자신
 
-휴지통을 비우기 전까지는 되살릴 수 있습니다.
+휴지통을 비우기 전까지는 되살릴 수 있습니다. 따로 깔린 rec 은 건드리지 않습니다.
 
 ---
 
-## 개발자용
+<details>
+<summary><b>개발자용</b></summary>
+
+### 구조
+
+- 엔진은 [rec](https://github.com/recursive-oss/rec) 0.1.1 입니다. 실행 파일을 바꾸지 않고 앱에 담아(`Contents/Resources/flint-mac/rec`) 앱 전용 폴더에서 돌립니다(`XDG_DATA_HOME=~/.local/share/bable-flint`).
+- 속도 개선은 rec 0.1.1 의 Python 엔진 파일 7개를 바꾸고 2개(`disk_cache.py`, `responses.py`)를 더한 것입니다. `install.py` 가 rec 실행 파일 안의 런타임을 풀어, 그 복사본에 `overlay/` 를 덮습니다.
+- 바꾼 파일마다 맨 위에 `Modified from recursive-oss/rec 0.1.1` 한 줄이 있고, 목록과 바꾼 내용은 [`NOTICE`](NOTICE) 에 있습니다.
 
 ### 빌드 · 시험
 
-소스에서 직접 빌드하려면 Swift 6(Xcode 16 이상)이 필요합니다.
+Swift 6(Xcode 16 이상)이 필요합니다.
 
 ```sh
 cd app
 swift test          # FlintCore 시험
-./build.sh          # build/bable-flint.app (ad-hoc 서명)
+./build.sh          # build/bable-flint.app (ad-hoc 서명, rec 0.1.1 포함)
 open build/bable-flint.app
 
 cd ..
 pnpm test           # = python3 -E -s -m unittest tests.test_chat tests.test_responses tests.test_install tests.test_codex_relay
 ```
 
-- `tests.test_codex_relay` 는 macOS 의 Python 3.14 이상에서만 돌고, 다른 곳에서는 건너뜁니다.
-- rec 런타임이 있어야 하는 시험은 Mac 에서 따로 돌립니다:
-  `~/.local/share/rec-tuned/rt/python/bin/python3.12 tests/test_server_defaults.py` (`test_disk_cache_pieces.py` 도 같음)
-- 앱 없이 설치 · 실행: `python3 install.py --check`(확인만), `python3 install.py`, 그다음 `rec stop; rec-serve-tuned`.
+- `build.sh` 는 rec 0.1.1 실행 파일을 이 Mac 에 있는 사본에서 가져오고, 없으면 rec 릴리즈에서 받습니다. 어느 쪽이든 SHA-256 이 맞아야 합니다.
+- `tests.test_codex_relay` 는 macOS 의 Python 3.14 이상에서만 돕니다.
+- 엔진 런타임이 있어야 하는 시험은 Mac 에서 따로 돌립니다:
+  `~/.local/share/bable-flint/rec-tuned/rt/python/bin/python3.12 tests/test_server_defaults.py` (`test_disk_cache_pieces.py` 도 같음)
+- 앱 없이 설치 · 실행: rec 0.1.1 을 `~/.local/share/bable-flint/bin/rec` 에 둔 뒤 `python3 install.py --check`(확인만), `python3 install.py`, 그다음 `~/.local/share/bable-flint/bin/rec-serve-tuned`.
 
 ### 환경 변수
 
-앱이 서버를 켤 때 넘기는 값입니다. rec 원래 런타임은 무시합니다.
+앱이 서버를 켤 때 넘기는 값입니다. 엔진의 원래 런타임은 무시합니다.
 
 | 변수 | 없을 때 | 뜻 |
 |---|---|---|
@@ -144,15 +193,13 @@ pnpm test           # = python3 -E -s -m unittest tests.test_chat tests.test_res
 ### 파일
 
 - `app/` — bable-flint.app. `Sources/FlintCore`(서버 · 옵션 · 연결 · 튜닝 로직, `Tests/` 에 시험), `Sources/Flint`(화면), `build.sh`
-- `install.py` — rec 런타임을 복사하고 `overlay/` 를 덮어 `~/.local/share/rec-tuned` 와 `~/.local/bin/rec-serve-tuned` 를 만듦
+- `install.py` — 엔진 런타임을 풀고 `overlay/` 를 덮어 `~/.local/share/bable-flint/rec-tuned` 와 `bin/rec-serve-tuned` 를 만듦
 - `overlay/rec_mlx/` — 바꾼 rec 파일
 - `relay/flint_codex_relay.py` — ChatGPT 앱 Codex 연결용 중계기
 - `tests/` — Python 시험
 
-### rec 에서 바꾼 파일
-
-rec 0.1.1 의 파일 7개를 바꾸고 2개(`disk_cache.py`, `responses.py`)를 더했습니다. 바꾼 파일마다 맨 위에 `Modified from recursive-oss/rec 0.1.1` 한 줄이 있습니다. 목록과 무엇을 바꿨는지는 [`NOTICE`](NOTICE) 에 있습니다.
+</details>
 
 ## 라이선스
 
-Apache-2.0 (`LICENSE`, `NOTICE`). rec 도 Apache-2.0 입니다. 앱에 든 글꼴 Pretendard 는 SIL Open Font License 1.1 입니다.
+Apache-2.0 (`LICENSE`, `NOTICE`). 앱에 든 rec 0.1.1 도 Apache-2.0 입니다. 글꼴 Pretendard 는 SIL Open Font License 1.1 입니다.
