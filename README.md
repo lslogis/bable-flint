@@ -45,7 +45,7 @@
 
 ## 설치
 
-1. [Releases](../../releases) 에서 `bable-flint-<버전>.dmg` 를 받습니다.
+1. [Releases](../../releases) 에서 `bable-flint-<버전>.dmg` 를 받습니다. **[바로 받기 (bable-flint-0.1.0.dmg)](https://github.com/lslogis/bable-flint/releases/latest/download/bable-flint-0.1.0.dmg)**
 2. dmg 를 열고 `bable-flint` 를 `Applications` 폴더로 끌어 놓습니다.
 3. 처음 열 때 macOS 가 "확인할 수 없는 개발자"라며 막습니다(Apple 개발자 서명이 없는 앱입니다).
    **시스템 설정 → 개인정보 보호 및 보안** 맨 아래의 **그래도 열기** 를 누르고, 한 번 더 **열기** 를 누르세요. 다음부터는 바로 열립니다.

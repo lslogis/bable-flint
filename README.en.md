@@ -45,7 +45,7 @@ If your Mac falls short, the app shows what is missing and downloads or changes 
 
 ## Install
 
-1. Download `bable-flint-<version>.dmg` from [Releases](../../releases).
+1. Download `bable-flint-<version>.dmg` from [Releases](../../releases). **[Direct download (bable-flint-0.1.0.dmg)](https://github.com/lslogis/bable-flint/releases/latest/download/bable-flint-0.1.0.dmg)**
 2. Open the dmg and drag `bable-flint` into the `Applications` folder.
 3. The first time you open it, macOS blocks it as coming from an unverified developer (the app has no Apple developer signature).
    Go to **System Settings → Privacy & Security**, press **Open Anyway** at the bottom, then **Open** once more. After that it opens normally.

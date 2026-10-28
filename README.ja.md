@@ -47,7 +47,7 @@
 
 ## インストール
 
-1. [Releases](../../releases) から `bable-flint-<バージョン>.dmg` をダウンロードします。
+1. [Releases](../../releases) から `bable-flint-<バージョン>.dmg` をダウンロードします。**[直接ダウンロード (bable-flint-0.1.0.dmg)](https://github.com/lslogis/bable-flint/releases/latest/download/bable-flint-0.1.0.dmg)**
 2. dmg を開き、`bable-flint` を `アプリケーション` フォルダへドラッグします。
 3. 初回は「開発元を確認できない」として macOS に止められます（Apple の開発者署名がないアプリです）。
    **システム設定 → プライバシーとセキュリティ** のいちばん下にある **このまま開く** を押し、もう一度 **開く** を押してください。次回からはそのまま開きます。
