@@ -142,6 +142,8 @@ Use **Manage → Uninstall**. It stops the server, restores every connected app,
 - the app's settings and connection files
 - the app itself
 
+It also takes out the `model = "flint"` line the ChatGPT app saves in `~/.codex/config.toml` when you pick Flint there (every other line stays).
+
 Until you empty the Trash, you can put them back. A rec you installed yourself is left alone.
 
 ---
