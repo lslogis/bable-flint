@@ -61,7 +61,7 @@ The app walks you through it.
 
 | Step | What happens |
 |---|---|
-| 0 | It asks for the name of the YouTube channel that made the app (any case). Once answered, it never asks again |
+| 0 | It asks for the name of the YouTube channel that made the app. Type **`bable`** (any case). Once answered, it never asks again |
 | 1 | It checks that this Mac meets the requirements |
 | 2 | It puts the engine inside the app (rec 0.1.1) into the app's own folder, `~/.local/share/bable-flint`. Automatic |
 | 3 | **Download** fetches the Flint model (about 21 GB). If a rec you installed yourself already downloaded it, the app clones that instead (an APFS clone, no extra space) |
