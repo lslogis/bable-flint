@@ -15,7 +15,7 @@ web
 
 ## Product Purpose
 
-Flint.app runs the local Flint model server (rec 0.1.1 with a tuned overlay), shows how fast and how heavy it is, and connects or disconnects coding apps to it. Every connection can be undone back to the app's original settings.
+bable-flint.app (the Flint app) runs the local Flint model server (rec 0.1.1 with a tuned overlay), shows how fast and how heavy it is, and connects or disconnects coding apps to it. Every connection can be undone back to the app's original settings.
 
 ## Operating Context
 

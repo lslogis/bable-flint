@@ -68,15 +68,15 @@ rec status                    # "ready":true 면 준비 끝, 포트 11500
 
 `rec launch opencode` 같은 rec 명령은 떠 있는 서버를 그대로 쓴다. 원래 런타임으로 돌아가려면 `rec stop` 뒤 `rec serve`.
 
-### Mac 앱 (Flint.app)
+### Mac 앱 (bable-flint.app)
 
 `app/` 은 위 일을 버튼으로 하는 SwiftUI 앱이다. 창은 처음 열 때 서버 화면 높이에 맞춰 열리고, 다른 탭이 더 길면 화면 안에서 늘어난다. 대화 캐시 최대는 8 ~ 512 GiB 에서 고른다. 서버 켜고 끄기, 옵션(샘플링 · 출력 한도 · 워커 · 청크 · 대화 캐시), 요청별 속도 · 메모리(읽기 · 생성 최고 속도 포함: 서버를 켠 뒤, 요청 기록을 남기면 남긴 기록까지), 이 Mac 에 맞추기(후보마다 서버를 다시 켜 재고 3% 넘게 빠를 때만 바꿈), Claude Code · Claude 앱 · Codex CLI · Codex 앱 · opencode 연결(자동 연결이 없는 Xcode · Zed · VS Code · Aider · Goose 는 "준비 중"으로 흐리게 두고 고를 수 없음. 연결 화면 맨 위에 쓰는 법과 복사할 명령: `claude-flint`, `codex-flint`, `opencode -m flint/flint`, Codex 앱은 ChatGPT 앱을 다시 시작해 프로젝트 대화에서 Flint (local), Claude 앱은 끈 채로 연결한 뒤 켜서 Flint (local)), 최소 사양 검사, 튜닝 런타임 설치 · 검사. 포트는 11500 · 11502 ~ 11504 중에서 고른다(11501 은 Codex 앱 중계기 몫). 서버가 꺼진 채 저장해도 연결한 앱 설정이 새 포트 · 길이로 바로 바뀐다. 연결 · 끊기는 창을 멈추지 않게 뒤에서 돈다.
 
 ```sh
 cd app
 swift test        # FlintCore 단위 시험
-./build.sh        # build/Flint.app (ad-hoc 서명, install.py · overlay 를 Resources 에 넣음)
-open build/Flint.app
+./build.sh        # build/bable-flint.app (ad-hoc 서명, install.py · overlay 를 Resources 에 넣음)
+open build/bable-flint.app
 ```
 
 - 연결된 앱이 있으면 Flint 를 끌 때 묻는다: 끊고 끄기(모두 연결 전으로 되돌림. Claude 앱이 연결돼 있으면 Claude 앱을 먼저 끄고, 10초 안에 안 꺼지면 Flint 도 끄지 않음) · 연결 둔 채 끄기 · 취소. 로그아웃 · 시스템 종료 때는 묻지 않는다.
@@ -152,7 +152,7 @@ rec serve                         # 원래 런타임
 | `tests/test_responses.py` | Responses 요청 → 채팅, 채팅 답 → Responses JSON · SSE 변환 시험. rec 에 기대지 않아 아무 python 3.10+ 로 |
 | `relay/flint_codex_relay.py` | Codex 앱 중계기 (위 "Codex 앱 연결"). 앱이 번들에 넣어 연결할 때 `~/.config/flint/codex-app/` 에 복사 |
 | `tests/test_codex_relay.py` | 중계기 시험: flint 목록 항목, 모델별 갈래, ETag, 압축 요약 왕복, 가짜 OpenAI · 가짜 Flint 를 127.0.0.1 에 띄워 요청 전체, 끊은 뒤 앱이 꺼질 때까지 남았다가 스스로 정리. Python 3.14+ (`/opt/homebrew/bin/python3 -m unittest tests.test_codex_relay`) |
-| `app/` | Flint.app: `Sources/FlintCore`(서버 · 옵션 · 연결 · 맞추기 로직, 시험 있음), `Sources/Flint`(화면) |
+| `app/` | bable-flint.app: `Sources/FlintCore`(서버 · 옵션 · 연결 · 맞추기 로직, 시험 있음), `Sources/Flint`(화면) |
 | `NOTICE`, `LICENSE` | rec 에서 가져와 바꾼 파일 목록, Apache-2.0 |
 
 ## 라이선스
