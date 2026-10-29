@@ -69,7 +69,7 @@ curl -fL -o /tmp/bable-flint.dmg https://github.com/lslogis/bable-flint/releases
   && open /Applications/bable-flint.app
 ```
 
-업데이트할 때도 같은 명령을 쓰면 됩니다. 먼저 앱을 끄세요.
+0.1.6 부터는 앱이 새 판을 알려 줍니다. **관리** 탭의 **업데이트** 버튼을 누르면 앱이 바뀌고, 켜져 있던 서버는 새 판으로 다시 켜집니다. 위 명령으로 덮어 깔아도 됩니다(먼저 앱을 끄세요).
 
 ## 처음 켤 때
 

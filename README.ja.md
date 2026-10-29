@@ -71,7 +71,7 @@ curl -fL -o /tmp/bable-flint.dmg https://github.com/lslogis/bable-flint/releases
   && open /Applications/bable-flint.app
 ```
 
-アップデートにも同じコマンドが使えます。先にアプリを終了してください。
+0.1.6 からはアプリが新しい版を知らせます。**管理** タブの **アップデート** ボタンでアプリが入れ替わり、動いていたサーバーは新しい版で再起動します。上のコマンドで上書きしても構いません(先にアプリを終了してください)。
 
 ## 初回起動
 

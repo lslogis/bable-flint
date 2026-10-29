@@ -69,7 +69,7 @@ curl -fL -o /tmp/bable-flint.dmg https://github.com/lslogis/bable-flint/releases
   && open /Applications/bable-flint.app
 ```
 
-The same command updates the app. Quit the app first.
+From 0.1.6 the app tells you when a new version is out. **Update** in **Manage** replaces the app, and a server that was on restarts on the new version. The command above also updates it (quit the app first).
 
 ## First run
 
