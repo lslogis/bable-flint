@@ -24,6 +24,6 @@ Added files (not part of rec), also under the Apache License, Version 2.0:
   README.en.md
 
 Bundled font:
-  app/Resources/Fonts/PretendardVariable.ttf  Pretendard 1.3.9 by Kil Hyung-jin (https://github.com/orioncactus/pretendard),
-  licensed under the SIL Open Font License, Version 1.1 (app/Resources/Fonts/OFL-Pretendard.txt, shipped next to the font
+  bable-flint.app/Contents/Resources/Fonts/PretendardVariable.ttf  Pretendard 1.3.9 by Kil Hyung-jin (https://github.com/orioncactus/pretendard),
+  licensed under the SIL Open Font License, Version 1.1 (OFL-Pretendard.txt, shipped next to the font
   in bable-flint.app). Reserved Font Name: Pretendard. The font file is unmodified.

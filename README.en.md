@@ -173,18 +173,6 @@ Until you empty the Trash, you can put them back. A rec you installed yourself i
 - The engine is [rec](https://github.com/recursive-oss/rec) 0.1.1. Its binary ships unchanged inside the app (`Contents/Resources/flint-mac/rec`) and runs in the app's own folder (`XDG_DATA_HOME=~/.local/share/bable-flint`).
 - The speed-up changes seven of rec 0.1.1's Python engine files and adds two (`disk_cache.py`, `responses.py`). `install.py` unpacks the runtime inside the rec binary and lays `overlay/` on a copy of it.
 - Each changed file starts with a `Modified from recursive-oss/rec 0.1.1` line. The list and what changed are in [`NOTICE`](NOTICE).
-
-### Build
-
-Needs Swift 6 (Xcode 16 or later).
-
-```sh
-cd app
-./build.sh          # build/bable-flint.app (ad-hoc signed, rec 0.1.1 included)
-open build/bable-flint.app
-```
-
-- `build.sh` takes the rec 0.1.1 binary from a copy on this Mac, or downloads it from rec's release. Either way its SHA-256 must match.
 - Install and run without the app: put rec 0.1.1 at `~/.local/share/bable-flint/bin/rec`, then `python3 install.py --check` (check only), `python3 install.py`, then `~/.local/share/bable-flint/bin/rec-serve-tuned`.
 
 ### Environment variables
@@ -204,7 +192,6 @@ The app passes these when it starts the server. The engine's original runtime ig
 
 ### Files
 
-- `app/`: bable-flint.app. `Sources/FlintCore` (server, options, connections and tuning logic), `Sources/Flint` (the windows), `build.sh`
 - `install.py`: unpacks the engine's runtime, lays `overlay/` on top, and creates `~/.local/share/bable-flint/rec-tuned` and `bin/rec-serve-tuned`
 - `overlay/rec_mlx/`: the changed rec files
 - `relay/flint_codex_relay.py`: the relay for Codex in the ChatGPT app

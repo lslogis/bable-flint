@@ -1,11 +1,8 @@
-# development only: tests, local checks, the npm test script
+# not published: the app source, tests and development scripts (the release dmg holds the built app)
+app/
 dev/
 tests/
-app/Tests/
 package.json
-# build output
-app/.build/
-app/build/
 __pycache__/
 *.pyc
 .DS_Store

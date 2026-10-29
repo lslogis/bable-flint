@@ -173,18 +173,6 @@ ChatGPT 앱에서 Flint 를 골랐을 때 그 앱이 `~/.codex/config.toml` 에 
 - 엔진은 [rec](https://github.com/recursive-oss/rec) 0.1.1 입니다. 실행 파일을 바꾸지 않고 앱에 담아(`Contents/Resources/flint-mac/rec`) 앱 전용 폴더에서 돌립니다(`XDG_DATA_HOME=~/.local/share/bable-flint`).
 - 속도 개선은 rec 0.1.1 의 Python 엔진 파일 7개를 바꾸고 2개(`disk_cache.py`, `responses.py`)를 더한 것입니다. `install.py` 가 rec 실행 파일 안의 런타임을 풀어, 그 복사본에 `overlay/` 를 덮습니다.
 - 바꾼 파일마다 맨 위에 `Modified from recursive-oss/rec 0.1.1` 한 줄이 있고, 목록과 바꾼 내용은 [`NOTICE`](NOTICE) 에 있습니다.
-
-### 빌드
-
-Swift 6(Xcode 16 이상)이 필요합니다.
-
-```sh
-cd app
-./build.sh          # build/bable-flint.app (ad-hoc 서명, rec 0.1.1 포함)
-open build/bable-flint.app
-```
-
-- `build.sh` 는 rec 0.1.1 실행 파일을 이 Mac 에 있는 사본에서 가져오고, 없으면 rec 릴리즈에서 받습니다. 어느 쪽이든 SHA-256 이 맞아야 합니다.
 - 앱 없이 설치 · 실행: rec 0.1.1 을 `~/.local/share/bable-flint/bin/rec` 에 둔 뒤 `python3 install.py --check`(확인만), `python3 install.py`, 그다음 `~/.local/share/bable-flint/bin/rec-serve-tuned`.
 
 ### 환경 변수
@@ -204,7 +192,6 @@ open build/bable-flint.app
 
 ### 파일
 
-- `app/` — bable-flint.app. `Sources/FlintCore`(서버 · 옵션 · 연결 · 튜닝 로직), `Sources/Flint`(화면), `build.sh`
 - `install.py` — 엔진 런타임을 풀고 `overlay/` 를 덮어 `~/.local/share/bable-flint/rec-tuned` 와 `bin/rec-serve-tuned` 를 만듦
 - `overlay/rec_mlx/` — 바꾼 rec 파일
 - `relay/flint_codex_relay.py` — ChatGPT 앱 Codex 연결용 중계기
