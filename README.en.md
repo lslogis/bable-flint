@@ -174,24 +174,17 @@ Until you empty the Trash, you can put them back. A rec you installed yourself i
 - The speed-up changes seven of rec 0.1.1's Python engine files and adds two (`disk_cache.py`, `responses.py`). `install.py` unpacks the runtime inside the rec binary and lays `overlay/` on a copy of it.
 - Each changed file starts with a `Modified from recursive-oss/rec 0.1.1` line. The list and what changed are in [`NOTICE`](NOTICE).
 
-### Build and test
+### Build
 
 Needs Swift 6 (Xcode 16 or later).
 
 ```sh
 cd app
-swift test          # FlintCore tests
 ./build.sh          # build/bable-flint.app (ad-hoc signed, rec 0.1.1 included)
 open build/bable-flint.app
-
-cd ..
-pnpm test           # = python3 -E -s -m unittest tests.test_chat tests.test_responses tests.test_install tests.test_device tests.test_codex_relay
 ```
 
 - `build.sh` takes the rec 0.1.1 binary from a copy on this Mac, or downloads it from rec's release. Either way its SHA-256 must match.
-- `tests.test_codex_relay` runs only with Python 3.14 or later on macOS.
-- Tests that need the engine's runtime run on the Mac:
-  `~/.local/share/bable-flint/rec-tuned/rt/python/bin/python3.12 tests/test_server_defaults.py` (the same for `test_disk_cache_pieces.py`)
 - Install and run without the app: put rec 0.1.1 at `~/.local/share/bable-flint/bin/rec`, then `python3 install.py --check` (check only), `python3 install.py`, then `~/.local/share/bable-flint/bin/rec-serve-tuned`.
 
 ### Environment variables
@@ -211,11 +204,10 @@ The app passes these when it starts the server. The engine's original runtime ig
 
 ### Files
 
-- `app/`: bable-flint.app. `Sources/FlintCore` (server, options, connections and tuning logic, tested in `Tests/`), `Sources/Flint` (the windows), `build.sh`
+- `app/`: bable-flint.app. `Sources/FlintCore` (server, options, connections and tuning logic), `Sources/Flint` (the windows), `build.sh`
 - `install.py`: unpacks the engine's runtime, lays `overlay/` on top, and creates `~/.local/share/bable-flint/rec-tuned` and `bin/rec-serve-tuned`
 - `overlay/rec_mlx/`: the changed rec files
 - `relay/flint_codex_relay.py`: the relay for Codex in the ChatGPT app
-- `tests/`: Python tests
 
 </details>
 

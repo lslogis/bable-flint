@@ -1,0 +1,11 @@
+# development only: tests, local checks, the npm test script
+dev/
+tests/
+app/Tests/
+package.json
+# build output
+app/.build/
+app/build/
+__pycache__/
+*.pyc
+.DS_Store

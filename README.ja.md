@@ -176,24 +176,17 @@ ChatGPT アプリで Flint を選んだときにそのアプリが `~/.codex/con
 - 高速化は rec 0.1.1 の Python エンジンのファイルを 7 つ変更し、2 つ（`disk_cache.py`、`responses.py`）を加えたものです。`install.py` が rec の実行ファイルに入っているランタイムを展開し、そのコピーに `overlay/` を重ねます。
 - 変更したファイルの先頭には `Modified from recursive-oss/rec 0.1.1` の 1 行があり、一覧と変更内容は [`NOTICE`](NOTICE) にあります。
 
-### ビルド・テスト
+### ビルド
 
 Swift 6（Xcode 16 以上）が必要です。
 
 ```sh
 cd app
-swift test          # FlintCore のテスト
 ./build.sh          # build/bable-flint.app（ad-hoc 署名、rec 0.1.1 同梱）
 open build/bable-flint.app
-
-cd ..
-pnpm test           # = python3 -E -s -m unittest tests.test_chat tests.test_responses tests.test_install tests.test_device tests.test_codex_relay
 ```
 
 - `build.sh` は rec 0.1.1 の実行ファイルをこの Mac にあるコピーから取り、なければ rec のリリースからダウンロードします。どちらでも SHA-256 が一致する必要があります。
-- `tests.test_codex_relay` は macOS の Python 3.14 以上でのみ動きます。
-- エンジンのランタイムが必要なテストは Mac で別に実行します：
-  `~/.local/share/bable-flint/rec-tuned/rt/python/bin/python3.12 tests/test_server_defaults.py`（`test_disk_cache_pieces.py` も同じ）
 - アプリなしでのインストール・実行：rec 0.1.1 を `~/.local/share/bable-flint/bin/rec` に置いてから `python3 install.py --check`（確認のみ）、`python3 install.py`、続いて `~/.local/share/bable-flint/bin/rec-serve-tuned`。
 
 ### 環境変数
@@ -213,11 +206,10 @@ pnpm test           # = python3 -E -s -m unittest tests.test_chat tests.test_res
 
 ### ファイル
 
-- `app/` — bable-flint.app。`Sources/FlintCore`（サーバー・オプション・接続・チューニングのロジック、テストは `Tests/`）、`Sources/Flint`（画面）、`build.sh`
+- `app/` — bable-flint.app。`Sources/FlintCore`（サーバー・オプション・接続・チューニングのロジック）、`Sources/Flint`（画面）、`build.sh`
 - `install.py` — エンジンのランタイムを展開して `overlay/` を重ね、`~/.local/share/bable-flint/rec-tuned` と `bin/rec-serve-tuned` を作る
 - `overlay/rec_mlx/` — 変更した rec のファイル
 - `relay/flint_codex_relay.py` — ChatGPT アプリの Codex 接続用の中継
-- `tests/` — Python のテスト
 
 </details>
 
