@@ -171,9 +171,8 @@ Until you empty the Trash, you can put them back. A rec you installed yourself i
 ### How it fits together
 
 - The engine is [rec](https://github.com/recursive-oss/rec) 0.1.1. Its binary ships unchanged inside the app (`Contents/Resources/flint-mac/rec`) and runs in the app's own folder (`XDG_DATA_HOME=~/.local/share/bable-flint`).
-- The speed-up changes seven of rec 0.1.1's Python engine files and adds two (`disk_cache.py`, `responses.py`). `install.py` unpacks the runtime inside the rec binary and lays `overlay/` on a copy of it.
+- The speed-up changes seven of rec 0.1.1's Python engine files and adds two (`disk_cache.py`, `responses.py`). The app unpacks the runtime inside the rec binary and lays the changed files on a copy of it.
 - Each changed file starts with a `Modified from recursive-oss/rec 0.1.1` line. The list and what changed are in [`NOTICE`](NOTICE).
-- Install and run without the app: put rec 0.1.1 at `~/.local/share/bable-flint/bin/rec`, then `python3 install.py --check` (check only), `python3 install.py`, then `~/.local/share/bable-flint/bin/rec-serve-tuned`.
 
 ### Environment variables
 
@@ -189,12 +188,6 @@ The app passes these when it starts the server. The engine's original runtime ig
 | `REC_TEMPERATURE`, `REC_TOP_P`, `REC_TOP_K`, `REC_PRESENCE_PENALTY` | rec's defaults (the app passes 1.0, 0.95, 20, 0) | Sampling used when a request leaves it out; a value the request sends wins. Out of range stops the server at start |
 | `REC_OUTPUT_LIMIT` | none | Maximum tokens in one answer |
 | `REC_METRICS` | none | Appends token counts, time, speed and memory per request to this JSONL file. No conversation text |
-
-### Files
-
-- `install.py`: unpacks the engine's runtime, lays `overlay/` on top, and creates `~/.local/share/bable-flint/rec-tuned` and `bin/rec-serve-tuned`
-- `overlay/rec_mlx/`: the changed rec files
-- `relay/flint_codex_relay.py`: the relay for Codex in the ChatGPT app
 
 </details>
 

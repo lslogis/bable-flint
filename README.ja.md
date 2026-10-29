@@ -173,9 +173,8 @@ ChatGPT アプリで Flint を選んだときにそのアプリが `~/.codex/con
 ### しくみ
 
 - エンジンは [rec](https://github.com/recursive-oss/rec) 0.1.1 です。実行ファイルを変更せずにアプリへ同梱し（`Contents/Resources/flint-mac/rec`）、アプリ専用フォルダで動かします（`XDG_DATA_HOME=~/.local/share/bable-flint`）。
-- 高速化は rec 0.1.1 の Python エンジンのファイルを 7 つ変更し、2 つ（`disk_cache.py`、`responses.py`）を加えたものです。`install.py` が rec の実行ファイルに入っているランタイムを展開し、そのコピーに `overlay/` を重ねます。
+- 高速化は rec 0.1.1 の Python エンジンのファイルを 7 つ変更し、2 つ（`disk_cache.py`、`responses.py`）を加えたものです。アプリが rec の実行ファイルに入っているランタイムを展開し、そのコピーに変更したファイルを重ねます。
 - 変更したファイルの先頭には `Modified from recursive-oss/rec 0.1.1` の 1 行があり、一覧と変更内容は [`NOTICE`](NOTICE) にあります。
-- アプリなしでのインストール・実行：rec 0.1.1 を `~/.local/share/bable-flint/bin/rec` に置いてから `python3 install.py --check`（確認のみ）、`python3 install.py`、続いて `~/.local/share/bable-flint/bin/rec-serve-tuned`。
 
 ### 環境変数
 
@@ -191,12 +190,6 @@ ChatGPT アプリで Flint を選んだときにそのアプリが `~/.codex/con
 | `REC_TEMPERATURE`・`REC_TOP_P`・`REC_TOP_K`・`REC_PRESENCE_PENALTY` | rec の既定値（アプリは 1.0・0.95・20・0） | リクエストに値がないときのサンプリング。リクエストの値が優先。範囲外だとサーバーは起動しない |
 | `REC_OUTPUT_LIMIT` | なし | 1 回の回答の最大トークン数 |
 | `REC_METRICS` | なし | リクエストごとのトークン数・時間・速度・メモリをこの JSONL ファイルに記録。会話の内容は残さない |
-
-### ファイル
-
-- `install.py` — エンジンのランタイムを展開して `overlay/` を重ね、`~/.local/share/bable-flint/rec-tuned` と `bin/rec-serve-tuned` を作る
-- `overlay/rec_mlx/` — 変更した rec のファイル
-- `relay/flint_codex_relay.py` — ChatGPT アプリの Codex 接続用の中継
 
 </details>
 
