@@ -93,7 +93,9 @@ When it is done, press **Start server**.
 - **Tabs on the right**: **Options**, **Apps**, **Manage**.
 - **Top right**: the **한/EN** language switch and zoom (−, 100%, +, or ⌘+ ⌘− ⌘0).
 - Closing the window keeps the server running. The Dock icon hides and the flame icon stays in the menu bar.
-- **Menu bar icon**: state and speed, start, stop and restart the server, open the window, copy the address, quit.
+- **Menu bar icon**: state and speed, start, stop and restart the server, cancel a start while it starts, update when a new version is out, open the window, copy the address, quit.
+- If a start seems stuck, **Cancel** next to **Starting** stops it so you can start again.
+- Only one copy of the app runs. Opening it again brings back the open window.
 - Quitting while the server runs asks: **Quit, Keep Server On**, **Quit and Stop Server** or **Cancel**.
 
 ## Options
@@ -147,6 +149,7 @@ In the **Apps** tab, each app shows what connecting will change. Press **Connect
 
 ## Manage
 
+- **Update**: the app looks for a new version at launch and every 6 hours; **Check** looks now. When one is out, **Update to 0.1.x** downloads it, replaces the app and opens it again. A server that was on is stopped completely and started once on the new version.
 - **Check** inspects the engine and the installed runtime. If something is still wrong, **Reinstall**.
 - **Log**: the server log, live, with an errors-only filter.
 
@@ -172,7 +175,7 @@ Until you empty the Trash, you can put them back. A rec you installed yourself i
 
 - The engine is [rec](https://github.com/recursive-oss/rec) 0.1.1. Its binary ships unchanged inside the app (`Contents/Resources/flint-mac/rec`) and runs in the app's own folder (`XDG_DATA_HOME=~/.local/share/bable-flint`).
 - The speed-up changes seven of rec 0.1.1's Python engine files and adds two (`disk_cache.py`, `responses.py`). The app unpacks the runtime inside the rec binary and lays the changed files on a copy of it.
-- Each changed file starts with a `Modified from recursive-oss/rec 0.1.1` line. The list and what changed are in [`NOTICE`](NOTICE).
+- Each changed file inside the app (`Contents/Resources/flint-mac/overlay`) starts with a `Modified from recursive-oss/rec 0.1.1` line. The list and what changed are in [`NOTICE`](NOTICE).
 
 ### Environment variables
 

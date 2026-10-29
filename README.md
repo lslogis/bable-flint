@@ -93,7 +93,9 @@ curl -fL -o /tmp/bable-flint.dmg https://github.com/lslogis/bable-flint/releases
 - **오른쪽 탭**: **켤 때 옵션 · 앱 연결 · 관리**.
 - **오른쪽 위**: **한/EN** 언어 전환, 확대 · 축소(−, 100%, + / ⌘+ ⌘− ⌘0).
 - 창을 닫아도 서버는 계속 돕니다. Dock 아이콘은 숨고 상단바의 불꽃 아이콘이 남습니다.
-- **상단바 아이콘**: 상태와 속도, 서버 켜기 · 끄기 · 다시 시작, 창 열기, 주소 복사, 종료.
+- **상단바 아이콘**: 상태와 속도, 서버 켜기 · 끄기 · 다시 시작, 켜는 중에는 켜기 그만두기, 새 판이 있으면 업데이트, 창 열기, 주소 복사, 종료.
+- 켜는 중에 멈춘 것 같으면 **켜는 중** 옆 **그만두기** 로 멈추고 다시 켤 수 있습니다.
+- 앱은 하나만 뜹니다. 이미 열려 있을 때 또 열면 열려 있던 창이 나옵니다.
 - 서버가 켜진 채 종료하면 묻습니다: **서버는 켜 두고 종료 · 서버도 끄고 종료 · 취소**.
 
 ## 켤 때 옵션
@@ -147,6 +149,7 @@ curl -fL -o /tmp/bable-flint.dmg https://github.com/lslogis/bable-flint/releases
 
 ## 관리
 
+- **업데이트**: 앱을 켤 때와 6시간마다 새 판을 확인합니다. **확인** 으로 바로 볼 수도 있습니다. 새 판이 있으면 **0.1.x 으로 업데이트** 를 누르면 받아서 앱을 바꾸고 다시 엽니다. 켜져 있던 서버는 옛 서버를 다 끈 뒤 새 판으로 하나만 다시 켭니다.
 - **점검**: 엔진과 설치된 런타임을 검사합니다. 그래도 이상하면 **다시 설치**.
 - **로그**: 서버 로그를 실시간으로 봅니다. **오류만** 으로 거를 수 있습니다.
 
@@ -172,7 +175,7 @@ ChatGPT 앱에서 Flint 를 골랐을 때 그 앱이 `~/.codex/config.toml` 에 
 
 - 엔진은 [rec](https://github.com/recursive-oss/rec) 0.1.1 입니다. 실행 파일을 바꾸지 않고 앱에 담아(`Contents/Resources/flint-mac/rec`) 앱 전용 폴더에서 돌립니다(`XDG_DATA_HOME=~/.local/share/bable-flint`).
 - 속도 개선은 rec 0.1.1 의 Python 엔진 파일 7개를 바꾸고 2개(`disk_cache.py`, `responses.py`)를 더한 것입니다. 앱이 rec 실행 파일 안의 런타임을 풀어, 그 복사본에 바꾼 파일을 덮습니다.
-- 바꾼 파일마다 맨 위에 `Modified from recursive-oss/rec 0.1.1` 한 줄이 있고, 목록과 바꾼 내용은 [`NOTICE`](NOTICE) 에 있습니다.
+- 앱 안(`Contents/Resources/flint-mac/overlay`)의 바꾼 파일마다 맨 위에 `Modified from recursive-oss/rec 0.1.1` 한 줄이 있고, 목록과 바꾼 내용은 [`NOTICE`](NOTICE) 에 있습니다.
 
 ### 환경 변수
 
